@@ -9,8 +9,8 @@ const config = {
   target: 'web',
   // https://stackoverflow.com/a/34018909
   entry: {
-    'stellar-base': path.resolve(__dirname, '../src/index.js'),
-    'stellar-base.min': path.resolve(__dirname, '../src/index.js')
+    'lantah-base': path.resolve(__dirname, '../src/index.js'),
+    'lantah-base.min': path.resolve(__dirname, '../src/index.js')
   },
   resolve: {
     fallback: {
@@ -21,7 +21,7 @@ const config = {
   },
   output: {
     clean: true,
-    library: 'StellarBase',
+    library: 'LantahBase',
     compareBeforeEmit: true,
     path: path.resolve(__dirname, '../dist')
   },

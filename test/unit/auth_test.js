@@ -1,7 +1,7 @@
-const { xdr, Address, scValToNative, StrKey } = StellarBase;
+const { xdr, Address, scValToNative, StrKey } = LantahBase;
 
 describe('building authorization entries', function () {
-  const kp = StellarBase.Keypair.random();
+  const kp = LantahBase.Keypair.random();
   const contractId = 'CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE';
 
   const authEntry = new xdr.SorobanAuthorizationEntry({
@@ -35,10 +35,10 @@ describe('building authorization entries', function () {
 
   [
     [kp, 'Keypair'],
-    [(preimage) => kp.sign(StellarBase.hash(preimage.toXDR())), 'callback']
+    [(preimage) => kp.sign(LantahBase.hash(preimage.toXDR())), 'callback']
   ].forEach(([signer, methodName]) => {
     it(`signs the entry correctly (${methodName})`, function (done) {
-      StellarBase.authorizeEntry(authEntry, signer, 10)
+      LantahBase.authorizeEntry(authEntry, signer, 10)
         .then((signedEntry) => {
           expect(signedEntry.rootInvocation().toXDR()).to.eql(
             authEntry.rootInvocation().toXDR(),
@@ -69,15 +69,15 @@ describe('building authorization entries', function () {
   });
 
   it('throws with a random signer', function () {
-    const randomKp = StellarBase.Keypair.random();
+    const randomKp = LantahBase.Keypair.random();
     expect(
-      StellarBase.authorizeEntry(authEntry, randomKp, 10)
+      LantahBase.authorizeEntry(authEntry, randomKp, 10)
     ).to.eventually.be.rejectedWith(/identity doesn't match/i);
   });
 
   it('throws with a bad signature', function () {
     expect(
-      StellarBase.authorizeEntry(
+      LantahBase.authorizeEntry(
         authEntry,
         (_) => accountId.sign(Buffer.from('bs')),
         10
@@ -86,7 +86,7 @@ describe('building authorization entries', function () {
   });
 
   it('can build from scratch', function (done) {
-    StellarBase.authorizeInvocation(kp, 10, authEntry.rootInvocation())
+    LantahBase.authorizeInvocation(kp, 10, authEntry.rootInvocation())
       .then((signedEntry) => {
         done();
       })

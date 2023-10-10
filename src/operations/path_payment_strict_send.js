@@ -6,7 +6,7 @@ import { decodeAddressToMuxedAccount } from '../util/decode_encode_muxed_account
  *
  * A `PathPaymentStrictSend` operation sends the specified amount to the
  * destination account crediting at least `destMin` of `destAsset`, optionally
- * through a path. XLM payments create the destination account if it does not
+ * through a path. GRAM payments create the destination account if it does not
  * exist.
  *
  * @function

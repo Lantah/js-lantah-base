@@ -52,7 +52,7 @@ export function revokeAccountSponsorship(opts = {}) {
  * @example
  * const op = Operation.revokeTrustlineSponsorship({
  *   account: 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7
- *   asset: new StellarBase.LiquidityPoolId(
+ *   asset: new LantahBase.LiquidityPoolId(
  *     'USDUSD',
  *     'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
  *   )

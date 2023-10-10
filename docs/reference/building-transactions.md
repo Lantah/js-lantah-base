@@ -11,38 +11,38 @@ that pays the [fee](https://developers.stellar.org/docs/glossary/fees/) and uses
 Transactions are made up of one or more [operations](https://developers.stellar.org/docs/glossary/operations/). Each operation also has a source account, which defaults to the transaction's source account.
 
 
-## [TransactionBuilder](https://github.com/stellar/js-stellar-base/blob/master/src/transaction_builder.js)
+## [TransactionBuilder](https://github.com/lantah/js-lantah-base/blob/master/src/transaction_builder.js)
 
 The `TransactionBuilder` class is used to construct new transactions. TransactionBuilder is given an account that is used as transaction's "source account".
-The transaction will use the current sequence number of the given [Account](https://github.com/stellar/js-stellar-base/blob/master/src/account.js) object as its sequence number and increments
+The transaction will use the current sequence number of the given [Account](https://github.com/lantah/js-lantah-base/blob/master/src/account.js) object as its sequence number and increments
 the given account's sequence number when `build()` is called on the `TransactionBuilder`.
 
 Operations can be added to the transaction calling `addOperation(operation)` for each operation you wish to add to the transaction.
-See [operation.js](https://github.com/stellar/js-stellar-base/blob/master/src/operation.js) for a list of possible operations you can add.
+See [operation.js](https://github.com/lantah/js-lantah-base/blob/master/src/operation.js) for a list of possible operations you can add.
 `addOperation(operation)` returns the current `TransactionBuilder` object so you can chain multiple calls.
 
 After adding the desired operations, call the `build()` method on the `TransactionBuilder`.
-This will return a fully constructed [Transaction](https://github.com/stellar/js-stellar-base/blob/master/src/transaction.js).
+This will return a fully constructed [Transaction](https://github.com/lantah/js-lantah-base/blob/master/src/transaction.js).
 The returned transaction will contain the sequence number of the source account. This transaction is unsigned. You must sign it before it will be accepted by the Stellar network.
 
 
 ```js
-// StellarBase.Network.usePublicNetwork(); if this transaction is for the public network
+// LantahBase.Network.usePublicNetwork(); if this transaction is for the public network
 // Create an Account object from an address and sequence number.
-var account=new StellarBase.Account("GD6WU64OEP5C4LRBH6NK3MHYIA2ADN6K6II6EXPNVUR3ERBXT4AN4ACD","2319149195853854");
+var account=new LantahBase.Account("GD6WU64OEP5C4LRBH6NK3MHYIA2ADN6K6II6EXPNVUR3ERBXT4AN4ACD","2319149195853854");
 
-var transaction = new StellarBase.TransactionBuilder(account, {
-        fee: StellarBase.BASE_FEE,
+var transaction = new LantahBase.TransactionBuilder(account, {
+        fee: LantahBase.BASE_FEE,
         networkPassphrase: Networks.TESTNET
     })
         // add a payment operation to the transaction
-        .addOperation(StellarBase.Operation.payment({
+        .addOperation(LantahBase.Operation.payment({
                 destination: "GASOCNHNNLYFNMDJYQ3XFMI7BYHIOCFW3GJEOWRPEGK2TDPGTG2E5EDW",
-                asset: StellarBase.Asset.native(),
-                amount: "100.50"  // 100.50 XLM
+                asset: LantahBase.Asset.native(),
+                amount: "100.50"  // 100.50 GRAM
             }))
         // add a set options operation to the transaction
-        .addOperation(StellarBase.Operation.setOptions({
+        .addOperation(LantahBase.Operation.setOptions({
                 signer: {
                     ed25519PublicKey: secondAccountAddress,
                     weight: 1
@@ -70,7 +70,7 @@ the correct value.  So, if you're submitting many transactions quickly, you will
 
 ## Adding Memos
 Transactions can contain a "memo" field you can use to attach additional information to the transaction. You can do this
-by passing a [memo](https://github.com/stellar/js-stellar-base/blob/master/src/memo.js) object when you construct the TransactionBuilder.
+by passing a [memo](https://github.com/lantah/js-lantah-base/blob/master/src/memo.js) object when you construct the TransactionBuilder.
 There are 5 types of memos:
 * `Memo.none` - empty memo,
 * `Memo.text` - 28-byte ascii encoded string memo,
@@ -80,14 +80,14 @@ There are 5 types of memos:
 
 ```js
 var memo = Memo.text('Happy birthday!');
-var transaction = new StellarBase.TransactionBuilder(account, {
+var transaction = new LantahBase.TransactionBuilder(account, {
     memo: memo,
-    fee: StellarBase.BASE_FEE,
+    fee: LantahBase.BASE_FEE,
     networkPassphrase: Networks.TESTNET
 })
-        .addOperation(StellarBase.Operation.payment({
+        .addOperation(LantahBase.Operation.payment({
                 destination: "GASOCNHNNLYFNMDJYQ3XFMI7BYHIOCFW3GJEOWRPEGK2TDPGTG2E5EDW",
-                asset: StellarBase.Asset.native(),
+                asset: LantahBase.Asset.native(),
                 amount: "2000"
             }))
         .setTimeout(30)
@@ -95,7 +95,7 @@ var transaction = new StellarBase.TransactionBuilder(account, {
 ```
 
 
-## [Transaction](https://github.com/stellar/js-stellar-base/blob/master/src/transaction.js)
+## [Transaction](https://github.com/lantah/js-lantah-base/blob/master/src/transaction.js)
 
 You probably won't instantiate `Transaction` objects directly. Objects of this class are returned after `TransactionBuilder`
 builds a transaction. However, you can create a new `Transaction` object from a base64 representation of a transaction envelope.
@@ -147,16 +147,16 @@ var key1 = Keypair.fromSecret('SBK2VIYYSVG76E7VC3QHYARNFLY2EAQXDHRC7BMXBBGIFG74A
 var key2 = Keypair.fromSecret('SAMZUAAPLRUH62HH3XE7NVD6ZSMTWPWGM6DS4X47HLVRHEBKP4U2H5E7');
 
 // Create an Account object from an address and sequence number.
-var account=new StellarBase.Account("GD6WU64OEP5C4LRBH6NK3MHYIA2ADN6K6II6EXPNVUR3ERBXT4AN4ACD","2319149195853854");
+var account=new LantahBase.Account("GD6WU64OEP5C4LRBH6NK3MHYIA2ADN6K6II6EXPNVUR3ERBXT4AN4ACD","2319149195853854");
 
-var transaction = new StellarBase.TransactionBuilder(account, {
-    fee: StellarBase.BASE_FEE,
+var transaction = new LantahBase.TransactionBuilder(account, {
+    fee: LantahBase.BASE_FEE,
     networkPassphrase: Networks.TESTNET
 })
-        .addOperation(StellarBase.Operation.payment({
+        .addOperation(LantahBase.Operation.payment({
                 destination: "GASOCNHNNLYFNMDJYQ3XFMI7BYHIOCFW3GJEOWRPEGK2TDPGTG2E5EDW",
-                asset: StellarBase.Asset.native(),
-                amount: "2000"  // 2000 XLM
+                asset: LantahBase.Asset.native(),
+                amount: "2000"  // 2000 GRAM
             }))
         .setTimeout(30)
         .build();

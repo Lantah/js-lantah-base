@@ -12,7 +12,7 @@ import { XdrLargeInt } from './xdr_large_int';
  * example, you could do `new XdrLargeInt('u128', bytes...).toBigInt()`.
  *
  * @example
- * import sdk from "stellar-base";
+ * import sdk from "lantah-base";
  *
  * // You have an ScVal from a contract and want to parse it into JS native.
  * const value = sdk.xdr.ScVal.fromXDR(someXdr, "base64");

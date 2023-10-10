@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-const { encodeMuxedAccountToAddress, encodeMuxedAccount } = StellarBase;
+const { encodeMuxedAccountToAddress, encodeMuxedAccount } = LantahBase;
 
 describe('Operation', function () {
   describe('.createAccount()', function () {
@@ -8,15 +8,15 @@ describe('Operation', function () {
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
       var startingBalance = '1000.0000000';
-      let op = StellarBase.Operation.createAccount({
+      let op = LantahBase.Operation.createAccount({
         destination,
         startingBalance
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('createAccount');
       expect(obj.destination).to.be.equal(destination);
       expect(operation.body().value().startingBalance().toString()).to.be.equal(
@@ -30,7 +30,7 @@ describe('Operation', function () {
         startingBalance: '20',
         source: 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
       };
-      expect(() => StellarBase.Operation.createAccount(opts)).to.throw(
+      expect(() => LantahBase.Operation.createAccount(opts)).to.throw(
         /destination is invalid/
       );
     });
@@ -41,7 +41,7 @@ describe('Operation', function () {
         startingBalance: '0',
         source: 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
       };
-      expect(() => StellarBase.Operation.createAccount(opts)).not.to.throw();
+      expect(() => LantahBase.Operation.createAccount(opts)).not.to.throw();
     });
 
     it('fails to create createAccount operation with an invalid startingBalance', function () {
@@ -50,7 +50,7 @@ describe('Operation', function () {
         startingBalance: 20,
         source: 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
       };
-      expect(() => StellarBase.Operation.createAccount(opts)).to.throw(
+      expect(() => LantahBase.Operation.createAccount(opts)).to.throw(
         /startingBalance argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
       );
     });
@@ -61,7 +61,7 @@ describe('Operation', function () {
         startingBalance: '20',
         source: 'GCEZ'
       };
-      expect(() => StellarBase.Operation.createAccount(opts)).to.throw(
+      expect(() => LantahBase.Operation.createAccount(opts)).to.throw(
         /Source address is invalid/
       );
     });
@@ -72,14 +72,14 @@ describe('Operation', function () {
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
       var amount = '1000.0000000';
-      var asset = new StellarBase.Asset(
+      var asset = new LantahBase.Asset(
         'USDUSD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      let op = StellarBase.Operation.payment({ destination, asset, amount });
+      let op = LantahBase.Operation.payment({ destination, asset, amount });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('payment');
       expect(obj.destination).to.be.equal(destination);
     });
@@ -96,21 +96,21 @@ describe('Operation', function () {
     const destination =
       'MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAAGZFQ';
     const amount = '1000.0000000';
-    const asset = StellarBase.Asset.native();
+    const asset = LantahBase.Asset.native();
     const source =
       'MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAALIWQ';
     const base = 'GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ';
 
     function paymentPacksCorrectly(opts) {
-      const packed = StellarBase.Operation.payment(opts);
+      const packed = LantahBase.Operation.payment(opts);
 
       // Ensure we can convert to and from the raw XDR:
       expect(() => {
-        StellarBase.xdr.Operation.fromXDR(packed.toXDR('raw'), 'raw');
-        StellarBase.xdr.Operation.fromXDR(packed.toXDR('hex'), 'hex');
+        LantahBase.xdr.Operation.fromXDR(packed.toXDR('raw'), 'raw');
+        LantahBase.xdr.Operation.fromXDR(packed.toXDR('hex'), 'hex');
       }).to.not.throw();
 
-      const unpacked = StellarBase.Operation.fromXDRObject(packed, true);
+      const unpacked = LantahBase.Operation.fromXDRObject(packed, true);
 
       // Ensure the properties match the inputs:
       expect(unpacked.type).to.equal('payment');
@@ -139,10 +139,10 @@ describe('Operation', function () {
     it('fails to create payment operation with an invalid destination address', function () {
       let opts = {
         destination: 'GCEZW',
-        asset: StellarBase.Asset.native(),
+        asset: LantahBase.Asset.native(),
         amount: '20'
       };
-      expect(() => StellarBase.Operation.payment(opts)).to.throw(
+      expect(() => LantahBase.Operation.payment(opts)).to.throw(
         /destination is invalid/
       );
     });
@@ -150,10 +150,10 @@ describe('Operation', function () {
     it('fails to create payment operation with an invalid amount', function () {
       let opts = {
         destination: 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ',
-        asset: StellarBase.Asset.native(),
+        asset: LantahBase.Asset.native(),
         amount: 20
       };
-      expect(() => StellarBase.Operation.payment(opts)).to.throw(
+      expect(() => LantahBase.Operation.payment(opts)).to.throw(
         /amount argument must be of type String/
       );
     });
@@ -161,29 +161,29 @@ describe('Operation', function () {
 
   describe('.pathPaymentStrictReceive()', function () {
     it('creates a pathPaymentStrictReceiveOp', function () {
-      var sendAsset = new StellarBase.Asset(
+      var sendAsset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       var sendMax = '3.0070000';
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
-      var destAsset = new StellarBase.Asset(
+      var destAsset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       var destAmount = '3.1415000';
       var path = [
-        new StellarBase.Asset(
+        new LantahBase.Asset(
           'USD',
           'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB'
         ),
-        new StellarBase.Asset(
+        new LantahBase.Asset(
           'EUR',
           'GDTNXRLOJD2YEBPKK7KCMR7J33AAG5VZXHAJTHIG736D6LVEFLLLKPDL'
         )
       ];
-      let op = StellarBase.Operation.pathPaymentStrictReceive({
+      let op = LantahBase.Operation.pathPaymentStrictReceive({
         sendAsset,
         sendMax,
         destination,
@@ -192,10 +192,10 @@ describe('Operation', function () {
         path
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('pathPaymentStrictReceive');
       expect(obj.sendAsset.equals(sendAsset)).to.be.true;
       expect(operation.body().value().sendMax().toString()).to.be.equal(
@@ -223,7 +223,7 @@ describe('Operation', function () {
     const destination = encodeMuxedAccountToAddress(
       encodeMuxedAccount(base, '2')
     );
-    const sendAsset = new StellarBase.Asset(
+    const sendAsset = new LantahBase.Asset(
       'USD',
       'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
     );
@@ -232,11 +232,11 @@ describe('Operation', function () {
     const sendMax = '3.0070000';
     const destAmount = '3.1415000';
     const path = [
-      new StellarBase.Asset(
+      new LantahBase.Asset(
         'USD',
         'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB'
       ),
-      new StellarBase.Asset(
+      new LantahBase.Asset(
         'EUR',
         'GDTNXRLOJD2YEBPKK7KCMR7J33AAG5VZXHAJTHIG736D6LVEFLLLKPDL'
       )
@@ -252,15 +252,15 @@ describe('Operation', function () {
     };
 
     it('supports muxed accounts', function () {
-      const packed = StellarBase.Operation.pathPaymentStrictReceive(opts);
+      const packed = LantahBase.Operation.pathPaymentStrictReceive(opts);
 
       // Ensure we can convert to and from the raw XDR:
       expect(() => {
-        StellarBase.xdr.Operation.fromXDR(packed.toXDR('raw'), 'raw');
-        StellarBase.xdr.Operation.fromXDR(packed.toXDR('hex'), 'hex');
+        LantahBase.xdr.Operation.fromXDR(packed.toXDR('raw'), 'raw');
+        LantahBase.xdr.Operation.fromXDR(packed.toXDR('hex'), 'hex');
       }).to.not.throw();
 
-      const unpacked = StellarBase.Operation.fromXDRObject(packed);
+      const unpacked = LantahBase.Operation.fromXDRObject(packed);
       expect(unpacked.type).to.equal('pathPaymentStrictReceive');
       expect(unpacked.source).to.equal(opts.source);
       expect(unpacked.destination).to.equal(opts.destination);
@@ -269,14 +269,14 @@ describe('Operation', function () {
     it('fails to create path payment operation with an invalid destination address', function () {
       opts.destination = 'GCEZW';
       expect(() =>
-        StellarBase.Operation.pathPaymentStrictReceive(opts)
+        LantahBase.Operation.pathPaymentStrictReceive(opts)
       ).to.throw(/destination is invalid/);
     });
 
     it('fails to create path payment operation with an invalid sendMax', function () {
       opts.sendMax = 20;
       expect(() =>
-        StellarBase.Operation.pathPaymentStrictReceive(opts)
+        LantahBase.Operation.pathPaymentStrictReceive(opts)
       ).to.throw(/sendMax argument must be of type String/);
     });
 
@@ -285,43 +285,43 @@ describe('Operation', function () {
         destination: 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ',
         sendMax: '20',
         destAmount: 50,
-        sendAsset: StellarBase.Asset.native(),
-        destAsset: new StellarBase.Asset(
+        sendAsset: LantahBase.Asset.native(),
+        destAsset: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
       expect(() =>
-        StellarBase.Operation.pathPaymentStrictReceive(opts)
+        LantahBase.Operation.pathPaymentStrictReceive(opts)
       ).to.throw(/destAmount argument must be of type String/);
     });
   });
 
   describe('.pathPaymentStrictSend()', function () {
     it('creates a pathPaymentStrictSendOp', function () {
-      var sendAsset = new StellarBase.Asset(
+      var sendAsset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       var sendAmount = '3.0070000';
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
-      var destAsset = new StellarBase.Asset(
+      var destAsset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       var destMin = '3.1415000';
       var path = [
-        new StellarBase.Asset(
+        new LantahBase.Asset(
           'USD',
           'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB'
         ),
-        new StellarBase.Asset(
+        new LantahBase.Asset(
           'EUR',
           'GDTNXRLOJD2YEBPKK7KCMR7J33AAG5VZXHAJTHIG736D6LVEFLLLKPDL'
         )
       ];
-      let op = StellarBase.Operation.pathPaymentStrictSend({
+      let op = LantahBase.Operation.pathPaymentStrictSend({
         sendAsset,
         sendAmount,
         destination,
@@ -330,10 +330,10 @@ describe('Operation', function () {
         path
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('pathPaymentStrictSend');
       expect(obj.sendAsset.equals(sendAsset)).to.be.true;
       expect(operation.body().value().sendAmount().toString()).to.be.equal(
@@ -363,29 +363,29 @@ describe('Operation', function () {
     );
 
     let opts = { source, destination };
-    opts.sendAsset = opts.destAsset = new StellarBase.Asset(
+    opts.sendAsset = opts.destAsset = new LantahBase.Asset(
       'USD',
       'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
     );
     opts.destMin = '3.1415000';
     opts.sendAmount = '3.0070000';
     opts.path = [
-      new StellarBase.Asset(
+      new LantahBase.Asset(
         'USD',
         'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB'
       )
     ];
 
     it('supports muxed accounts', function () {
-      const packed = StellarBase.Operation.pathPaymentStrictSend(opts);
+      const packed = LantahBase.Operation.pathPaymentStrictSend(opts);
 
       // Ensure we can convert to and from the raw XDR:
       expect(() => {
-        StellarBase.xdr.Operation.fromXDR(packed.toXDR('raw'), 'raw');
-        StellarBase.xdr.Operation.fromXDR(packed.toXDR('hex'), 'hex');
+        LantahBase.xdr.Operation.fromXDR(packed.toXDR('raw'), 'raw');
+        LantahBase.xdr.Operation.fromXDR(packed.toXDR('hex'), 'hex');
       }).to.not.throw();
 
-      const unpacked = StellarBase.Operation.fromXDRObject(packed);
+      const unpacked = LantahBase.Operation.fromXDRObject(packed);
       expect(unpacked.type).to.equal('pathPaymentStrictSend');
       expect(unpacked.source).to.equal(opts.source);
       expect(unpacked.destination).to.equal(opts.destination);
@@ -396,13 +396,13 @@ describe('Operation', function () {
         destination: 'GCEZW',
         sendAmount: '20',
         destMin: '50',
-        sendAsset: StellarBase.Asset.native(),
-        destAsset: new StellarBase.Asset(
+        sendAsset: LantahBase.Asset.native(),
+        destAsset: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.pathPaymentStrictSend(opts)).to.throw(
+      expect(() => LantahBase.Operation.pathPaymentStrictSend(opts)).to.throw(
         /destination is invalid/
       );
     });
@@ -412,13 +412,13 @@ describe('Operation', function () {
         destination: 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ',
         sendAmount: 20,
         destMin: '50',
-        sendAsset: StellarBase.Asset.native(),
-        destAsset: new StellarBase.Asset(
+        sendAsset: LantahBase.Asset.native(),
+        destAsset: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.pathPaymentStrictSend(opts)).to.throw(
+      expect(() => LantahBase.Operation.pathPaymentStrictSend(opts)).to.throw(
         /sendAmount argument must be of type String/
       );
     });
@@ -428,13 +428,13 @@ describe('Operation', function () {
         destination: 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ',
         sendAmount: '20',
         destMin: 50,
-        sendAsset: StellarBase.Asset.native(),
-        destAsset: new StellarBase.Asset(
+        sendAsset: LantahBase.Asset.native(),
+        destAsset: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.pathPaymentStrictSend(opts)).to.throw(
+      expect(() => LantahBase.Operation.pathPaymentStrictSend(opts)).to.throw(
         /destMin argument must be of type String/
       );
     });
@@ -442,16 +442,16 @@ describe('Operation', function () {
 
   describe('.changeTrust()', function () {
     it('creates a changeTrustOp with Asset', function () {
-      let asset = new StellarBase.Asset(
+      let asset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      let op = StellarBase.Operation.changeTrust({ asset });
+      let op = LantahBase.Operation.changeTrust({ asset });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
       expect(operation.body().value().limit().toString()).to.be.equal(
@@ -461,19 +461,19 @@ describe('Operation', function () {
     });
 
     it('creates a changeTrustOp with Asset and limit', function () {
-      let asset = new StellarBase.Asset(
+      let asset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      let op = StellarBase.Operation.changeTrust({
+      let op = LantahBase.Operation.changeTrust({
         asset,
         limit: '50.0000000'
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
       expect(operation.body().value().limit().toString()).to.be.equal(
@@ -483,22 +483,22 @@ describe('Operation', function () {
     });
 
     it('creates a changeTrustOp to a liquidity pool', function () {
-      const assetA = new StellarBase.Asset(
+      const assetA = new LantahBase.Asset(
         'ARST',
         'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB'
       );
-      const assetB = new StellarBase.Asset(
+      const assetB = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      const fee = StellarBase.LiquidityPoolFeeV18;
-      const asset = new StellarBase.LiquidityPoolAsset(assetA, assetB, fee);
-      const op = StellarBase.Operation.changeTrust({ asset });
-      expect(op).to.be.instanceof(StellarBase.xdr.Operation);
+      const fee = LantahBase.LiquidityPoolFeeV18;
+      const asset = new LantahBase.LiquidityPoolAsset(assetA, assetB, fee);
+      const op = LantahBase.Operation.changeTrust({ asset });
+      expect(op).to.be.instanceof(LantahBase.xdr.Operation);
 
       const opXdr = op.toXDR('hex');
-      const opXdrObj = StellarBase.xdr.Operation.fromXDR(opXdr, 'hex');
-      const operation = StellarBase.Operation.fromXDRObject(opXdrObj);
+      const opXdrObj = LantahBase.xdr.Operation.fromXDR(opXdr, 'hex');
+      const operation = LantahBase.Operation.fromXDRObject(opXdrObj);
 
       expect(operation.type).to.be.equal('changeTrust');
       expect(operation.line).to.be.deep.equal(asset);
@@ -509,56 +509,56 @@ describe('Operation', function () {
     });
 
     it('deletes an Asset trustline', function () {
-      let asset = new StellarBase.Asset(
+      let asset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      let op = StellarBase.Operation.changeTrust({
+      let op = LantahBase.Operation.changeTrust({
         asset: asset,
         limit: '0.0000000'
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
       expect(obj.limit).to.be.equal('0.0000000');
     });
 
     it('deletes a LiquidityPoolAsset trustline', function () {
-      const assetA = new StellarBase.Asset(
+      const assetA = new LantahBase.Asset(
         'ARST',
         'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB'
       );
-      const assetB = new StellarBase.Asset(
+      const assetB = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      const fee = StellarBase.LiquidityPoolFeeV18;
-      const asset = new StellarBase.LiquidityPoolAsset(assetA, assetB, fee);
-      let op = StellarBase.Operation.changeTrust({
+      const fee = LantahBase.LiquidityPoolFeeV18;
+      const asset = new LantahBase.LiquidityPoolAsset(assetA, assetB, fee);
+      let op = LantahBase.Operation.changeTrust({
         asset,
         limit: '0.0000000'
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
       expect(obj.limit).to.be.equal('0.0000000');
     });
 
     it('throws TypeError for incorrect limit argument', function () {
-      let asset = new StellarBase.Asset(
+      let asset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       let changeTrust = () =>
-        StellarBase.Operation.changeTrust({ asset: asset, limit: 0 });
+        LantahBase.Operation.changeTrust({ asset: asset, limit: 0 });
       expect(changeTrust).to.throw(TypeError);
     });
   });
@@ -568,16 +568,16 @@ describe('Operation', function () {
       let trustor = 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
       let assetCode = 'USD';
       let authorize = true;
-      let op = StellarBase.Operation.allowTrust({
+      let op = LantahBase.Operation.allowTrust({
         trustor: trustor,
         assetCode: assetCode,
         authorize: authorize
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('allowTrust');
       expect(obj.trustor).to.be.equal(trustor);
       expect(obj.assetCode).to.be.equal(assetCode);
@@ -588,7 +588,7 @@ describe('Operation', function () {
       let opts = {
         trustor: 'GCEZW'
       };
-      expect(() => StellarBase.Operation.allowTrust(opts)).to.throw(
+      expect(() => LantahBase.Operation.allowTrust(opts)).to.throw(
         /trustor is invalid/
       );
     });
@@ -596,10 +596,10 @@ describe('Operation', function () {
 
   describe('.setOptions()', function () {
     it('auth flags are set correctly', function () {
-      expect(StellarBase.AuthRequiredFlag).to.be.equal(1);
-      expect(StellarBase.AuthRevocableFlag).to.be.equal(2);
-      expect(StellarBase.AuthImmutableFlag).to.be.equal(4);
-      expect(StellarBase.AuthClawbackEnabledFlag).to.be.equal(8);
+      expect(LantahBase.AuthRequiredFlag).to.be.equal(1);
+      expect(LantahBase.AuthRevocableFlag).to.be.equal(2);
+      expect(LantahBase.AuthImmutableFlag).to.be.equal(4);
+      expect(LantahBase.AuthClawbackEnabledFlag).to.be.equal(8);
     });
 
     it('creates a setOptionsOp', function () {
@@ -607,9 +607,9 @@ describe('Operation', function () {
       opts.inflationDest =
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
       opts.clearFlags =
-        StellarBase.AuthRevocableFlag | StellarBase.AuthImmutableFlag;
+        LantahBase.AuthRevocableFlag | LantahBase.AuthImmutableFlag;
       opts.setFlags =
-        StellarBase.AuthRequiredFlag | StellarBase.AuthClawbackEnabledFlag;
+        LantahBase.AuthRequiredFlag | LantahBase.AuthClawbackEnabledFlag;
       opts.masterWeight = 0;
       opts.lowThreshold = 1;
       opts.medThreshold = 2;
@@ -621,12 +621,12 @@ describe('Operation', function () {
         weight: 1
       };
       opts.homeDomain = 'www.example.com';
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expect(obj.type).to.be.equal('setOptions');
       expect(obj.inflationDest).to.be.equal(opts.inflationDest);
@@ -647,19 +647,19 @@ describe('Operation', function () {
     it('creates a setOptionsOp with preAuthTx signer', function () {
       var opts = {};
 
-      var hash = StellarBase.hash('Tx hash');
+      var hash = LantahBase.hash('Tx hash');
 
       opts.signer = {
         preAuthTx: hash,
         weight: 10
       };
 
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expectBuffersToBeEqual(obj.signer.preAuthTx, hash);
       expect(obj.signer.weight).to.be.equal(opts.signer.weight);
@@ -668,7 +668,7 @@ describe('Operation', function () {
     it('creates a setOptionsOp with preAuthTx signer from a hex string', function () {
       var opts = {};
 
-      var hash = StellarBase.hash('Tx hash').toString('hex');
+      var hash = LantahBase.hash('Tx hash').toString('hex');
       expect(typeof hash === 'string').to.be.true;
 
       opts.signer = {
@@ -676,12 +676,12 @@ describe('Operation', function () {
         weight: 10
       };
 
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expectBuffersToBeEqual(obj.signer.preAuthTx, hash);
       expect(obj.signer.weight).to.be.equal(opts.signer.weight);
@@ -690,19 +690,19 @@ describe('Operation', function () {
     it('creates a setOptionsOp with hash signer', function () {
       var opts = {};
 
-      var hash = StellarBase.hash('Hash Preimage');
+      var hash = LantahBase.hash('Hash Preimage');
 
       opts.signer = {
         sha256Hash: hash,
         weight: 10
       };
 
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expectBuffersToBeEqual(obj.signer.sha256Hash, hash);
       expect(obj.signer.weight).to.be.equal(opts.signer.weight);
@@ -711,7 +711,7 @@ describe('Operation', function () {
     it('creates a setOptionsOp with hash signer from a hex string', function () {
       var opts = {};
 
-      var hash = StellarBase.hash('Hash Preimage').toString('hex');
+      var hash = LantahBase.hash('Hash Preimage').toString('hex');
       expect(typeof hash === 'string').to.be.true;
 
       opts.signer = {
@@ -719,12 +719,12 @@ describe('Operation', function () {
         weight: 10
       };
 
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expectBuffersToBeEqual(obj.signer.sha256Hash, hash);
       expect(obj.signer.weight).to.be.equal(opts.signer.weight);
@@ -734,55 +734,55 @@ describe('Operation', function () {
       var opts = {};
 
       var pubkey = 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
-      var signedPayload = new StellarBase.xdr.SignerKeyEd25519SignedPayload({
-        ed25519: StellarBase.StrKey.decodeEd25519PublicKey(pubkey),
+      var signedPayload = new LantahBase.xdr.SignerKeyEd25519SignedPayload({
+        ed25519: LantahBase.StrKey.decodeEd25519PublicKey(pubkey),
         payload: Buffer.from('test')
       });
       var xdrSignerKey =
-        StellarBase.xdr.SignerKey.signerKeyTypeEd25519SignedPayload(
+        LantahBase.xdr.SignerKey.signerKeyTypeEd25519SignedPayload(
           signedPayload
         );
-      var payloadKey = StellarBase.SignerKey.encodeSignerKey(xdrSignerKey);
+      var payloadKey = LantahBase.SignerKey.encodeSignerKey(xdrSignerKey);
 
-      //var rawSignedPayload = Buffer.concat([StellarBase.StrKey.decodeEd25519PublicKey(pubkey), Buffer.from('test')]);
-      //var payloadKey = StellarBase.StrKey.encodeSignedPayload(rawSignedPayload);
+      //var rawSignedPayload = Buffer.concat([LantahBase.StrKey.decodeEd25519PublicKey(pubkey), Buffer.from('test')]);
+      //var payloadKey = LantahBase.StrKey.encodeSignedPayload(rawSignedPayload);
 
       opts.signer = {
         ed25519SignedPayload: payloadKey,
         weight: 10
       };
 
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expect(obj.signer.ed25519SignedPayload).to.be.equal(payloadKey);
       expect(obj.signer.weight).to.be.equal(opts.signer.weight);
     });
 
     it('empty homeDomain is decoded correctly', function () {
-      const keypair = StellarBase.Keypair.random();
-      const account = new StellarBase.Account(keypair.publicKey(), '0');
+      const keypair = LantahBase.Keypair.random();
+      const account = new LantahBase.Account(keypair.publicKey(), '0');
 
       // First operation do nothing.
-      const tx1 = new StellarBase.TransactionBuilder(account, {
+      const tx1 = new LantahBase.TransactionBuilder(account, {
         fee: 100,
         networkPassphrase: 'Some Network'
       })
-        .addOperation(StellarBase.Operation.setOptions({}))
-        .setTimeout(StellarBase.TimeoutInfinite)
+        .addOperation(LantahBase.Operation.setOptions({}))
+        .setTimeout(LantahBase.TimeoutInfinite)
         .build();
 
       // Second operation unset homeDomain
-      const tx2 = new StellarBase.TransactionBuilder(account, {
+      const tx2 = new LantahBase.TransactionBuilder(account, {
         fee: 100,
         networkPassphrase: 'Some Network'
       })
-        .addOperation(StellarBase.Operation.setOptions({ homeDomain: '' }))
-        .setTimeout(StellarBase.TimeoutInfinite)
+        .addOperation(LantahBase.Operation.setOptions({ homeDomain: '' }))
+        .setTimeout(LantahBase.TimeoutInfinite)
         .build();
 
       expect(tx1.operations[0].homeDomain).to.be.undefined;
@@ -793,12 +793,12 @@ describe('Operation', function () {
       let opts = {
         setFlags: '4'
       };
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expect(obj.type).to.be.equal('setOptions');
       expect(obj.setFlags).to.be.equal(4);
@@ -808,19 +808,19 @@ describe('Operation', function () {
       let opts = {
         setFlags: {}
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw();
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw();
     });
 
     it('string clearFlags', function () {
       let opts = {
         clearFlags: '4'
       };
-      let op = StellarBase.Operation.setOptions(opts);
+      let op = LantahBase.Operation.setOptions(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
 
       expect(obj.type).to.be.equal('setOptions');
       expect(obj.clearFlags).to.be.equal(4);
@@ -830,14 +830,14 @@ describe('Operation', function () {
       let opts = {
         clearFlags: {}
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw();
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw();
     });
 
     it('fails to create setOptions operation with an invalid inflationDest address', function () {
       let opts = {
         inflationDest: 'GCEZW'
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /inflationDest is invalid/
       );
     });
@@ -849,7 +849,7 @@ describe('Operation', function () {
           weight: 1
         }
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /signer.ed25519PublicKey is invalid/
       );
     });
@@ -863,7 +863,7 @@ describe('Operation', function () {
           weight: 1
         }
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /Signer object must contain exactly one/
       );
     });
@@ -872,7 +872,7 @@ describe('Operation', function () {
       let opts = {
         masterWeight: 400
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /masterWeight value must be between 0 and 255/
       );
     });
@@ -881,7 +881,7 @@ describe('Operation', function () {
       let opts = {
         lowThreshold: 400
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /lowThreshold value must be between 0 and 255/
       );
     });
@@ -890,7 +890,7 @@ describe('Operation', function () {
       let opts = {
         medThreshold: 400
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /medThreshold value must be between 0 and 255/
       );
     });
@@ -899,7 +899,7 @@ describe('Operation', function () {
       let opts = {
         highThreshold: 400
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /highThreshold value must be between 0 and 255/
       );
     });
@@ -908,7 +908,7 @@ describe('Operation', function () {
       let opts = {
         homeDomain: 67238
       };
-      expect(() => StellarBase.Operation.setOptions(opts)).to.throw(
+      expect(() => LantahBase.Operation.setOptions(opts)).to.throw(
         /homeDomain argument must be of type String/
       );
     });
@@ -917,23 +917,23 @@ describe('Operation', function () {
   describe('.manageSellOffer', function () {
     it('creates a manageSellOfferOp (string price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '3.1234560';
       opts.price = '8.141592';
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageSellOffer(opts);
+      let op = LantahBase.Operation.manageSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageSellOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -947,11 +947,11 @@ describe('Operation', function () {
 
     it('creates a manageSellOfferOp (price fraction)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
@@ -961,12 +961,12 @@ describe('Operation', function () {
         d: 10
       };
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageSellOffer(opts);
+      let op = LantahBase.Operation.manageSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.price).to.be.equal(
         new BigNumber(opts.price.n).div(opts.price.d).toString()
       );
@@ -974,11 +974,11 @@ describe('Operation', function () {
 
     it('creates an invalid manageSellOfferOp (price fraction)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
@@ -988,75 +988,75 @@ describe('Operation', function () {
         d: -1
       };
       opts.offerId = '1';
-      expect(() => StellarBase.Operation.manageSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageSellOffer(opts)).to.throw(
         /price must be positive/
       );
     });
 
     it('creates a manageSellOfferOp (number price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '3.123456';
       opts.price = 3.07;
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageSellOffer(opts);
+      let op = LantahBase.Operation.manageSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageSellOffer');
       expect(obj.price).to.be.equal(opts.price.toString());
     });
 
     it('creates a manageSellOfferOp (BigNumber price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '3.123456';
       opts.price = new BigNumber(5).dividedBy(4);
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageSellOffer(opts);
+      let op = LantahBase.Operation.manageSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageSellOffer');
       expect(obj.price).to.be.equal('1.25');
     });
 
     it('creates a manageSellOfferOp with no offerId', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '1000.0000000';
       opts.price = '3.141592';
-      let op = StellarBase.Operation.manageSellOffer(opts);
+      let op = LantahBase.Operation.manageSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageSellOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1070,23 +1070,23 @@ describe('Operation', function () {
 
     it('cancels offer', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '0.0000000';
       opts.price = '3.141592';
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageSellOffer(opts);
+      let op = LantahBase.Operation.manageSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageSellOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1100,16 +1100,16 @@ describe('Operation', function () {
       let opts = {
         amount: 20,
         price: '10',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageSellOffer(opts)).to.throw(
         /amount argument must be of type String/
       );
     });
@@ -1117,16 +1117,16 @@ describe('Operation', function () {
     it('fails to create manageSellOffer operation with missing price', function () {
       let opts = {
         amount: '20',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageSellOffer(opts)).to.throw(
         /price argument is required/
       );
     });
@@ -1135,16 +1135,16 @@ describe('Operation', function () {
       let opts = {
         amount: '20',
         price: '-1',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageSellOffer(opts)).to.throw(
         /price must be positive/
       );
     });
@@ -1153,16 +1153,16 @@ describe('Operation', function () {
       let opts = {
         amount: '20',
         price: 'test',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageSellOffer(opts)).to.throw(
         /not a number/i
       );
     });
@@ -1171,23 +1171,23 @@ describe('Operation', function () {
   describe('.manageBuyOffer', function () {
     it('creates a manageBuyOfferOp (string price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.buyAmount = '3.1234560';
       opts.price = '8.141592';
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageBuyOffer(opts);
+      let op = LantahBase.Operation.manageBuyOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageBuyOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1201,11 +1201,11 @@ describe('Operation', function () {
 
     it('creates a manageBuyOfferOp (price fraction)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
@@ -1215,12 +1215,12 @@ describe('Operation', function () {
         d: 10
       };
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageBuyOffer(opts);
+      let op = LantahBase.Operation.manageBuyOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.price).to.be.equal(
         new BigNumber(opts.price.n).div(opts.price.d).toString()
       );
@@ -1228,11 +1228,11 @@ describe('Operation', function () {
 
     it('creates an invalid manageBuyOfferOp (price fraction)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
@@ -1242,75 +1242,75 @@ describe('Operation', function () {
         d: -1
       };
       opts.offerId = '1';
-      expect(() => StellarBase.Operation.manageBuyOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageBuyOffer(opts)).to.throw(
         /price must be positive/
       );
     });
 
     it('creates a manageBuyOfferOp (number price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.buyAmount = '3.123456';
       opts.price = 3.07;
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageBuyOffer(opts);
+      let op = LantahBase.Operation.manageBuyOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageBuyOffer');
       expect(obj.price).to.be.equal(opts.price.toString());
     });
 
     it('creates a manageBuyOfferOp (BigNumber price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.buyAmount = '3.123456';
       opts.price = new BigNumber(5).dividedBy(4);
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageBuyOffer(opts);
+      let op = LantahBase.Operation.manageBuyOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageBuyOffer');
       expect(obj.price).to.be.equal('1.25');
     });
 
     it('creates a manageBuyOfferOp with no offerId', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.buyAmount = '1000.0000000';
       opts.price = '3.141592';
-      let op = StellarBase.Operation.manageBuyOffer(opts);
+      let op = LantahBase.Operation.manageBuyOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageBuyOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1324,23 +1324,23 @@ describe('Operation', function () {
 
     it('cancels offer', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.buyAmount = '0.0000000';
       opts.price = '3.141592';
       opts.offerId = '1';
-      let op = StellarBase.Operation.manageBuyOffer(opts);
+      let op = LantahBase.Operation.manageBuyOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageBuyOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1354,16 +1354,16 @@ describe('Operation', function () {
       let opts = {
         buyAmount: 20,
         price: '10',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageBuyOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageBuyOffer(opts)).to.throw(
         /buyAmount argument must be of type String/
       );
     });
@@ -1371,16 +1371,16 @@ describe('Operation', function () {
     it('fails to create manageBuyOffer operation with missing price', function () {
       let opts = {
         buyAmount: '20',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageBuyOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageBuyOffer(opts)).to.throw(
         /price argument is required/
       );
     });
@@ -1389,16 +1389,16 @@ describe('Operation', function () {
       let opts = {
         buyAmount: '20',
         price: '-1',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageBuyOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageBuyOffer(opts)).to.throw(
         /price must be positive/
       );
     });
@@ -1407,16 +1407,16 @@ describe('Operation', function () {
       let opts = {
         buyAmount: '20',
         price: 'test',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.manageBuyOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.manageBuyOffer(opts)).to.throw(
         /not a number/i
       );
     });
@@ -1425,22 +1425,22 @@ describe('Operation', function () {
   describe('.createPassiveSellOffer', function () {
     it('creates a createPassiveSellOfferOp (string price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '11.2782700';
       opts.price = '3.07';
-      let op = StellarBase.Operation.createPassiveSellOffer(opts);
+      let op = LantahBase.Operation.createPassiveSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('createPassiveSellOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1453,22 +1453,22 @@ describe('Operation', function () {
 
     it('creates a createPassiveSellOfferOp (number price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '11.2782700';
       opts.price = 3.07;
-      let op = StellarBase.Operation.createPassiveSellOffer(opts);
+      let op = LantahBase.Operation.createPassiveSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('createPassiveSellOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1481,22 +1481,22 @@ describe('Operation', function () {
 
     it('creates a createPassiveSellOfferOp (BigNumber price)', function () {
       var opts = {};
-      opts.selling = new StellarBase.Asset(
+      opts.selling = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buying = new StellarBase.Asset(
+      opts.buying = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       opts.amount = '11.2782700';
       opts.price = new BigNumber(5).dividedBy(4);
-      let op = StellarBase.Operation.createPassiveSellOffer(opts);
+      let op = LantahBase.Operation.createPassiveSellOffer(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('createPassiveSellOffer');
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
@@ -1511,16 +1511,16 @@ describe('Operation', function () {
       let opts = {
         amount: 20,
         price: '10',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.createPassiveSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.createPassiveSellOffer(opts)).to.throw(
         /amount argument must be of type String/
       );
     });
@@ -1528,16 +1528,16 @@ describe('Operation', function () {
     it('fails to create createPassiveSellOffer operation with missing price', function () {
       let opts = {
         amount: '20',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.createPassiveSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.createPassiveSellOffer(opts)).to.throw(
         /price argument is required/
       );
     });
@@ -1546,16 +1546,16 @@ describe('Operation', function () {
       let opts = {
         amount: '20',
         price: '-2',
-        selling: new StellarBase.Asset(
+        selling: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         ),
-        buying: new StellarBase.Asset(
+        buying: new LantahBase.Asset(
           'USD',
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         )
       };
-      expect(() => StellarBase.Operation.createPassiveSellOffer(opts)).to.throw(
+      expect(() => LantahBase.Operation.createPassiveSellOffer(opts)).to.throw(
         /price must be positive/
       );
     });
@@ -1565,9 +1565,9 @@ describe('Operation', function () {
     const base = 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
 
     const checkMergeOp = function (opts) {
-      const xdr = StellarBase.Operation.accountMerge(opts).toXDR('hex');
-      const op = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
-      const obj = StellarBase.Operation.fromXDRObject(op);
+      const xdr = LantahBase.Operation.accountMerge(opts).toXDR('hex');
+      const op = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
+      const obj = LantahBase.Operation.fromXDRObject(op);
 
       expect(obj.type).to.be.equal('accountMerge');
       expect(obj.destination).to.be.equal(opts.destination);
@@ -1594,7 +1594,7 @@ describe('Operation', function () {
 
     it('fails to create accountMergeOp with invalid destination', function () {
       let opts = { destination: 'GCEZW' };
-      expect(() => StellarBase.Operation.accountMerge(opts)).to.throw(
+      expect(() => LantahBase.Operation.accountMerge(opts)).to.throw(
         /destination is invalid/
       );
     });
@@ -1602,12 +1602,12 @@ describe('Operation', function () {
 
   describe('.inflation', function () {
     it('creates a inflationOp', function () {
-      let op = StellarBase.Operation.inflation();
+      let op = LantahBase.Operation.inflation();
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('inflation');
     });
   });
@@ -1618,12 +1618,12 @@ describe('Operation', function () {
         name: 'name',
         value: 'value'
       };
-      let op = StellarBase.Operation.manageData(opts);
+      let op = LantahBase.Operation.manageData(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageData');
       expect(obj.name).to.be.equal(opts.name);
       expect(obj.value.toString('ascii')).to.be.equal(opts.value);
@@ -1634,12 +1634,12 @@ describe('Operation', function () {
         name: 'name',
         value: Buffer.from('value')
       };
-      let op = StellarBase.Operation.manageData(opts);
+      let op = LantahBase.Operation.manageData(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageData');
       expect(obj.name).to.be.equal(opts.name);
       expect(obj.value.toString('hex')).to.be.equal(opts.value.toString('hex'));
@@ -1650,12 +1650,12 @@ describe('Operation', function () {
         name: 'name',
         value: null
       };
-      let op = StellarBase.Operation.manageData(opts);
+      let op = LantahBase.Operation.manageData(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('manageData');
       expect(obj.name).to.be.equal(opts.name);
       expect(obj.value).to.be.undefined;
@@ -1664,19 +1664,19 @@ describe('Operation', function () {
     describe('fails to create manageData operation', function () {
       it('name is not a string', function () {
         expect(() =>
-          StellarBase.Operation.manageData({ name: 123 })
+          LantahBase.Operation.manageData({ name: 123 })
         ).to.throw();
       });
 
       it('name is too long', function () {
         expect(() =>
-          StellarBase.Operation.manageData({ name: 'a'.repeat(65) })
+          LantahBase.Operation.manageData({ name: 'a'.repeat(65) })
         ).to.throw();
       });
 
       it('value is too long', function () {
         expect(() =>
-          StellarBase.Operation.manageData({
+          LantahBase.Operation.manageData({
             name: 'a',
             value: Buffer.alloc(65)
           })
@@ -1690,19 +1690,19 @@ describe('Operation', function () {
       var opts = {
         bumpTo: '77833036561510299'
       };
-      let op = StellarBase.Operation.bumpSequence(opts);
+      let op = LantahBase.Operation.bumpSequence(opts);
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('bumpSequence');
       expect(obj.bumpTo).to.be.equal(opts.bumpTo);
     });
 
     it('fails when `bumpTo` is not string', function () {
       expect(() =>
-        StellarBase.Operation.bumpSequence({ bumpTo: 1000 })
+        LantahBase.Operation.bumpSequence({ bumpTo: 1000 })
       ).to.throw();
     });
   });
@@ -1720,7 +1720,7 @@ describe('Operation', function () {
       for (var i in values) {
         let { value, expected } = values[i];
         expect(
-          StellarBase.Operation._checkUnsignedIntValue(value, value)
+          LantahBase.Operation._checkUnsignedIntValue(value, value)
         ).to.be.equal(expected);
       }
     });
@@ -1743,14 +1743,14 @@ describe('Operation', function () {
       for (var i in values) {
         let value = values[i];
         expect(() =>
-          StellarBase.Operation._checkUnsignedIntValue(value, value)
+          LantahBase.Operation._checkUnsignedIntValue(value, value)
         ).to.throw();
       }
     });
 
     it('return correct values when isValidFunction is set', function () {
       expect(
-        StellarBase.Operation._checkUnsignedIntValue(
+        LantahBase.Operation._checkUnsignedIntValue(
           'test',
           undefined,
           (value) => value < 10
@@ -1758,14 +1758,14 @@ describe('Operation', function () {
       ).to.equal(undefined);
 
       expect(
-        StellarBase.Operation._checkUnsignedIntValue(
+        LantahBase.Operation._checkUnsignedIntValue(
           'test',
           8,
           (value) => value < 10
         )
       ).to.equal(8);
       expect(
-        StellarBase.Operation._checkUnsignedIntValue(
+        LantahBase.Operation._checkUnsignedIntValue(
           'test',
           '8',
           (value) => value < 10
@@ -1773,14 +1773,14 @@ describe('Operation', function () {
       ).to.equal(8);
 
       expect(() => {
-        StellarBase.Operation._checkUnsignedIntValue(
+        LantahBase.Operation._checkUnsignedIntValue(
           'test',
           12,
           (value) => value < 10
         );
       }).to.throw();
       expect(() => {
-        StellarBase.Operation._checkUnsignedIntValue(
+        LantahBase.Operation._checkUnsignedIntValue(
           'test',
           '12',
           (value) => value < 10
@@ -1791,27 +1791,27 @@ describe('Operation', function () {
 
   describe('createClaimableBalance()', function () {
     it('creates a CreateClaimableBalanceOp', function () {
-      const asset = new StellarBase.Asset(
+      const asset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       const amount = '100.0000000';
       const claimants = [
-        new StellarBase.Claimant(
+        new LantahBase.Claimant(
           'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
         )
       ];
 
-      const op = StellarBase.Operation.createClaimableBalance({
+      const op = LantahBase.Operation.createClaimableBalance({
         asset,
         amount,
         claimants
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('createClaimableBalance');
       expect(obj.asset.toString()).to.equal(asset.toString());
       expect(obj.amount).to.be.equal(amount);
@@ -1823,7 +1823,7 @@ describe('Operation', function () {
     it('throws an error when asset is not present', function () {
       const amount = '100.0000000';
       const claimants = [
-        new StellarBase.Claimant(
+        new LantahBase.Claimant(
           'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
         )
       ];
@@ -1834,18 +1834,18 @@ describe('Operation', function () {
       };
 
       expect(() =>
-        StellarBase.Operation.createClaimableBalance(attrs)
+        LantahBase.Operation.createClaimableBalance(attrs)
       ).to.throw(
         /must provide an asset for create claimable balance operation/
       );
     });
     it('throws an error when amount is not present', function () {
-      const asset = new StellarBase.Asset(
+      const asset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       const claimants = [
-        new StellarBase.Claimant(
+        new LantahBase.Claimant(
           'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
         )
       ];
@@ -1856,13 +1856,13 @@ describe('Operation', function () {
       };
 
       expect(() =>
-        StellarBase.Operation.createClaimableBalance(attrs)
+        LantahBase.Operation.createClaimableBalance(attrs)
       ).to.throw(
         /amount argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
       );
     });
     it('throws an error when claimants is empty or not present', function () {
-      const asset = new StellarBase.Asset(
+      const asset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
@@ -1874,12 +1874,12 @@ describe('Operation', function () {
       };
 
       expect(() =>
-        StellarBase.Operation.createClaimableBalance(attrs)
+        LantahBase.Operation.createClaimableBalance(attrs)
       ).to.throw(/must provide at least one claimant/);
 
       attrs.claimants = [];
       expect(() =>
-        StellarBase.Operation.createClaimableBalance(attrs)
+        LantahBase.Operation.createClaimableBalance(attrs)
       ).to.throw(/must provide at least one claimant/);
     });
   });
@@ -1889,23 +1889,23 @@ describe('Operation', function () {
       const balanceId =
         '00000000da0d57da7d4850e7fc10d2a9d0ebc731f7afb40574c03395b17d49149b91f5be';
 
-      const op = StellarBase.Operation.claimClaimableBalance({ balanceId });
+      const op = LantahBase.Operation.claimClaimableBalance({ balanceId });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('claimClaimableBalance');
       expect(obj.balanceId).to.equal(balanceId);
     });
     it('throws an error when balanceId is not present', function () {
-      expect(() => StellarBase.Operation.claimClaimableBalance({})).to.throw(
+      expect(() => LantahBase.Operation.claimClaimableBalance({})).to.throw(
         /must provide a valid claimable balance id/
       );
     });
     it('throws an error for invalid balanceIds', function () {
       expect(() =>
-        StellarBase.Operation.claimClaimableBalance({
+        LantahBase.Operation.claimClaimableBalance({
           balanceId: 'badc0ffee'
         })
       ).to.throw(/must provide a valid claimable balance id/);
@@ -1917,25 +1917,25 @@ describe('Operation', function () {
       const balanceId =
         '00000000da0d57da7d4850e7fc10d2a9d0ebc731f7afb40574c03395b17d49149b91f5be';
 
-      const op = StellarBase.Operation.clawbackClaimableBalance({
+      const op = LantahBase.Operation.clawbackClaimableBalance({
         balanceId: balanceId
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('clawbackClaimableBalance');
       expect(obj.balanceId).to.equal(balanceId);
     });
     it('throws an error when balanceId is not present', function () {
-      expect(() => StellarBase.Operation.clawbackClaimableBalance({})).to.throw(
+      expect(() => LantahBase.Operation.clawbackClaimableBalance({})).to.throw(
         /must provide a valid claimable balance id/
       );
     });
     it('throws an error for invalid balanceIds', function () {
       expect(() =>
-        StellarBase.Operation.clawbackClaimableBalance({
+        LantahBase.Operation.clawbackClaimableBalance({
           balanceId: 'badc0ffee'
         })
       ).to.throw(/must provide a valid claimable balance id/);
@@ -1947,25 +1947,25 @@ describe('Operation', function () {
       const sponsoredId =
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
 
-      const op = StellarBase.Operation.beginSponsoringFutureReserves({
+      const op = LantahBase.Operation.beginSponsoringFutureReserves({
         sponsoredId
       });
       var xdr = op.toXDR('hex');
 
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal(
         'beginSponsoringFutureReserves'
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('beginSponsoringFutureReserves');
       expect(obj.sponsoredId).to.equal(sponsoredId);
     });
     it('throws an error when sponsoredId is invalid', function () {
       expect(() =>
-        StellarBase.Operation.beginSponsoringFutureReserves({})
+        LantahBase.Operation.beginSponsoringFutureReserves({})
       ).to.throw(/sponsoredId is invalid/);
       expect(() =>
-        StellarBase.Operation.beginSponsoringFutureReserves({
+        LantahBase.Operation.beginSponsoringFutureReserves({
           sponsoredId: 'GBAD'
         })
       ).to.throw(/sponsoredId is invalid/);
@@ -1974,14 +1974,14 @@ describe('Operation', function () {
 
   describe('endSponsoringFutureReserves()', function () {
     it('creates a endSponsoringFutureReservesOp', function () {
-      const op = StellarBase.Operation.endSponsoringFutureReserves();
+      const op = LantahBase.Operation.endSponsoringFutureReserves();
       var xdr = op.toXDR('hex');
 
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal(
         'endSponsoringFutureReserves'
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('endSponsoringFutureReserves');
     });
   });
@@ -1990,23 +1990,23 @@ describe('Operation', function () {
     it('creates a revokeAccountSponsorshipOp', function () {
       const account =
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
-      const op = StellarBase.Operation.revokeAccountSponsorship({
+      const op = LantahBase.Operation.revokeAccountSponsorship({
         account
       });
       var xdr = op.toXDR('hex');
 
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeAccountSponsorship');
       expect(obj.account).to.be.equal(account);
     });
     it('throws an error when account is invalid', function () {
-      expect(() => StellarBase.Operation.revokeAccountSponsorship({})).to.throw(
+      expect(() => LantahBase.Operation.revokeAccountSponsorship({})).to.throw(
         /account is invalid/
       );
       expect(() =>
-        StellarBase.Operation.revokeAccountSponsorship({
+        LantahBase.Operation.revokeAccountSponsorship({
           account: 'GBAD'
         })
       ).to.throw(/account is invalid/);
@@ -2017,22 +2017,22 @@ describe('Operation', function () {
     it('creates operation', function () {
       const contractId =
         'CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE';
-      const c = new StellarBase.Contract(contractId);
-      const op = StellarBase.Operation.invokeHostFunction({
-        func: StellarBase.xdr.HostFunction.hostFunctionTypeInvokeContract(
-          new StellarBase.xdr.InvokeContractArgs({
+      const c = new LantahBase.Contract(contractId);
+      const op = LantahBase.Operation.invokeHostFunction({
+        func: LantahBase.xdr.HostFunction.hostFunctionTypeInvokeContract(
+          new LantahBase.xdr.InvokeContractArgs({
             contractAddress: c.address().toScAddress(),
             functionName: 'hello',
-            args: [StellarBase.nativeToScVal('world')]
+            args: [LantahBase.nativeToScVal('world')]
           })
         ),
         auth: []
       });
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
 
       expect(operation.body().switch().name).to.equal('invokeHostFunction');
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('invokeHostFunction');
       expect(obj.func.switch().name).to.equal('hostFunctionTypeInvokeContract');
       expect(obj.auth).to.deep.equal([]);
@@ -2040,7 +2040,7 @@ describe('Operation', function () {
 
     it('throws when no func passed', function () {
       expect(() =>
-        StellarBase.Operation.invokeHostFunction({
+        LantahBase.Operation.invokeHostFunction({
           auth: []
         })
       ).to.throw(/\('func'\) required/);
@@ -2049,21 +2049,21 @@ describe('Operation', function () {
 
   describe('bumpFootprintExpiration()', function () {
     it('creates operation', function () {
-      const op = StellarBase.Operation.bumpFootprintExpiration({
+      const op = LantahBase.Operation.bumpFootprintExpiration({
         ledgersToExpire: 1234
       });
       const xdr = op.toXDR('hex');
-      const operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      const operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
 
       expect(operation.body().switch().name).to.equal(
         'bumpFootprintExpiration'
       );
-      const obj = StellarBase.Operation.fromXDRObject(operation);
+      const obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('bumpFootprintExpiration');
       expect(obj.ledgersToExpire).to.equal(1234);
 
       expect(() => {
-        StellarBase.Operation.bumpFootprintExpiration({
+        LantahBase.Operation.bumpFootprintExpiration({
           ledgersToExpire: 0
         });
       }).to.throw(/ledger quantity/i);
@@ -2072,12 +2072,12 @@ describe('Operation', function () {
 
   describe('restoreFootprint()', function () {
     it('creates operation', function () {
-      const op = StellarBase.Operation.restoreFootprint();
+      const op = LantahBase.Operation.restoreFootprint();
       const xdr = op.toXDR('hex');
-      const operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      const operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
 
       expect(operation.body().switch().name).to.equal('restoreFootprint');
-      const obj = StellarBase.Operation.fromXDRObject(operation);
+      const obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('restoreFootprint');
     });
   });
@@ -2086,51 +2086,51 @@ describe('Operation', function () {
     it('creates a revokeTrustlineSponsorship', function () {
       const account =
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
-      var asset = new StellarBase.Asset(
+      var asset = new LantahBase.Asset(
         'USDUSD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      const op = StellarBase.Operation.revokeTrustlineSponsorship({
+      const op = LantahBase.Operation.revokeTrustlineSponsorship({
         account,
         asset
       });
       var xdr = op.toXDR('hex');
 
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeTrustlineSponsorship');
     });
     it('creates a revokeTrustlineSponsorship for a liquidity pool', function () {
       const account =
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
-      const asset = new StellarBase.LiquidityPoolId(
+      const asset = new LantahBase.LiquidityPoolId(
         'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7'
       );
-      const op = StellarBase.Operation.revokeTrustlineSponsorship({
+      const op = LantahBase.Operation.revokeTrustlineSponsorship({
         account,
         asset
       });
       const xdr = op.toXDR('hex');
 
-      const operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      const operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
-      const obj = StellarBase.Operation.fromXDRObject(operation);
+      const obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeTrustlineSponsorship');
     });
     it('throws an error when account is invalid', function () {
       expect(() =>
-        StellarBase.Operation.revokeTrustlineSponsorship({})
+        LantahBase.Operation.revokeTrustlineSponsorship({})
       ).to.throw(/account is invalid/);
       expect(() =>
-        StellarBase.Operation.revokeTrustlineSponsorship({
+        LantahBase.Operation.revokeTrustlineSponsorship({
           account: 'GBAD'
         })
       ).to.throw(/account is invalid/);
     });
     it('throws an error when asset is invalid', function () {
       expect(() =>
-        StellarBase.Operation.revokeTrustlineSponsorship({
+        LantahBase.Operation.revokeTrustlineSponsorship({
           account: 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         })
       ).to.throw(/asset must be an Asset or LiquidityPoolId/);
@@ -2141,32 +2141,32 @@ describe('Operation', function () {
     it('creates a revokeOfferSponsorship', function () {
       const seller = 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
       var offerId = '1234';
-      const op = StellarBase.Operation.revokeOfferSponsorship({
+      const op = LantahBase.Operation.revokeOfferSponsorship({
         seller,
         offerId
       });
       var xdr = op.toXDR('hex');
 
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeOfferSponsorship');
       expect(obj.seller).to.be.equal(seller);
       expect(obj.offerId).to.be.equal(offerId);
     });
     it('throws an error when seller is invalid', function () {
-      expect(() => StellarBase.Operation.revokeOfferSponsorship({})).to.throw(
+      expect(() => LantahBase.Operation.revokeOfferSponsorship({})).to.throw(
         /seller is invalid/
       );
       expect(() =>
-        StellarBase.Operation.revokeOfferSponsorship({
+        LantahBase.Operation.revokeOfferSponsorship({
           seller: 'GBAD'
         })
       ).to.throw(/seller is invalid/);
     });
     it('throws an error when asset offerId is not included', function () {
       expect(() =>
-        StellarBase.Operation.revokeOfferSponsorship({
+        LantahBase.Operation.revokeOfferSponsorship({
           seller: 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         })
       ).to.throw(/offerId is invalid/);
@@ -2178,32 +2178,32 @@ describe('Operation', function () {
       const account =
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
       var name = 'foo';
-      const op = StellarBase.Operation.revokeDataSponsorship({
+      const op = LantahBase.Operation.revokeDataSponsorship({
         account,
         name
       });
       var xdr = op.toXDR('hex');
 
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeDataSponsorship');
       expect(obj.account).to.be.equal(account);
       expect(obj.name).to.be.equal(name);
     });
     it('throws an error when account is invalid', function () {
-      expect(() => StellarBase.Operation.revokeDataSponsorship({})).to.throw(
+      expect(() => LantahBase.Operation.revokeDataSponsorship({})).to.throw(
         /account is invalid/
       );
       expect(() =>
-        StellarBase.Operation.revokeDataSponsorship({
+        LantahBase.Operation.revokeDataSponsorship({
           account: 'GBAD'
         })
       ).to.throw(/account is invalid/);
     });
     it('throws an error when data name is not included', function () {
       expect(() =>
-        StellarBase.Operation.revokeDataSponsorship({
+        LantahBase.Operation.revokeDataSponsorship({
           account: 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         })
       ).to.throw(/name must be a string, up to 64 characters/);
@@ -2214,20 +2214,20 @@ describe('Operation', function () {
     it('creates a revokeClaimableBalanceSponsorship', function () {
       const balanceId =
         '00000000da0d57da7d4850e7fc10d2a9d0ebc731f7afb40574c03395b17d49149b91f5be';
-      const op = StellarBase.Operation.revokeClaimableBalanceSponsorship({
+      const op = LantahBase.Operation.revokeClaimableBalanceSponsorship({
         balanceId
       });
       var xdr = op.toXDR('hex');
 
-      var operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      var operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeClaimableBalanceSponsorship');
       expect(obj.balanceId).to.be.equal(balanceId);
     });
     it('throws an error when balanceId is invalid', function () {
       expect(() =>
-        StellarBase.Operation.revokeClaimableBalanceSponsorship({})
+        LantahBase.Operation.revokeClaimableBalanceSponsorship({})
       ).to.throw(/balanceId is invalid/);
     });
   });
@@ -2236,22 +2236,22 @@ describe('Operation', function () {
     it('creates a revokeLiquidityPoolSponsorship', function () {
       const liquidityPoolId =
         'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7';
-      const op = StellarBase.Operation.revokeLiquidityPoolSponsorship({
+      const op = LantahBase.Operation.revokeLiquidityPoolSponsorship({
         liquidityPoolId
       });
       const xdr = op.toXDR('hex');
 
-      const operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      const operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
 
-      const obj = StellarBase.Operation.fromXDRObject(operation);
+      const obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeLiquidityPoolSponsorship');
       expect(obj.liquidityPoolId).to.be.equal(liquidityPoolId);
     });
 
     it('throws an error when liquidityPoolId is invalid', function () {
       expect(() =>
-        StellarBase.Operation.revokeLiquidityPoolSponsorship({})
+        LantahBase.Operation.revokeLiquidityPoolSponsorship({})
       ).to.throw(/liquidityPoolId is invalid/);
     });
   });
@@ -2264,43 +2264,43 @@ describe('Operation', function () {
         ed25519PublicKey:
           'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       };
-      let op = StellarBase.Operation.revokeSignerSponsorship({
+      let op = LantahBase.Operation.revokeSignerSponsorship({
         account,
         signer
       });
       let xdr = op.toXDR('hex');
 
-      let operation = StellarBase.xdr.Operation.fromXDR(xdr, 'hex');
+      let operation = LantahBase.xdr.Operation.fromXDR(xdr, 'hex');
       expect(operation.body().switch().name).to.equal('revokeSponsorship');
-      let obj = StellarBase.Operation.fromXDRObject(operation);
+      let obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeSignerSponsorship');
       expect(obj.account).to.be.equal(account);
       expect(obj.signer.ed25519PublicKey).to.be.equal(signer.ed25519PublicKey);
 
       // preAuthTx signer
       signer = {
-        preAuthTx: StellarBase.hash('Tx hash').toString('hex')
+        preAuthTx: LantahBase.hash('Tx hash').toString('hex')
       };
-      op = StellarBase.Operation.revokeSignerSponsorship({
+      op = LantahBase.Operation.revokeSignerSponsorship({
         account,
         signer
       });
-      operation = StellarBase.xdr.Operation.fromXDR(op.toXDR('hex'), 'hex');
-      obj = StellarBase.Operation.fromXDRObject(operation);
+      operation = LantahBase.xdr.Operation.fromXDR(op.toXDR('hex'), 'hex');
+      obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeSignerSponsorship');
       expect(obj.account).to.be.equal(account);
       expect(obj.signer.preAuthTx).to.be.equal(signer.preAuthTx);
 
       // sha256Hash signer
       signer = {
-        sha256Hash: StellarBase.hash('Hash Preimage').toString('hex')
+        sha256Hash: LantahBase.hash('Hash Preimage').toString('hex')
       };
-      op = StellarBase.Operation.revokeSignerSponsorship({
+      op = LantahBase.Operation.revokeSignerSponsorship({
         account,
         signer
       });
-      operation = StellarBase.xdr.Operation.fromXDR(op.toXDR('hex'), 'hex');
-      obj = StellarBase.Operation.fromXDRObject(operation);
+      operation = LantahBase.xdr.Operation.fromXDR(op.toXDR('hex'), 'hex');
+      obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('revokeSignerSponsorship');
       expect(obj.account).to.be.equal(account);
       expect(obj.signer.sha256Hash).to.be.equal(signer.sha256Hash);
@@ -2311,7 +2311,7 @@ describe('Operation', function () {
           'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
       };
       expect(() =>
-        StellarBase.Operation.revokeSignerSponsorship({
+        LantahBase.Operation.revokeSignerSponsorship({
           signer
         })
       ).to.throw(/account is invalid/);
@@ -2320,42 +2320,42 @@ describe('Operation', function () {
 
   describe('clawback()', function () {
     it('requires asset, amount, account', function () {
-      let asset = new StellarBase.Asset(
+      let asset = new LantahBase.Asset(
         'GCOIN',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
       const amount = '100.0000000';
 
       expect(() => {
-        StellarBase.Operation.clawback({
+        LantahBase.Operation.clawback({
           from: 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
         });
       }).to.throw();
       expect(() => {
-        StellarBase.Operation.clawback({ amount });
+        LantahBase.Operation.clawback({ amount });
       }).to.throw();
       expect(() => {
-        StellarBase.Operation.clawback({ asset });
+        LantahBase.Operation.clawback({ asset });
       }).to.throw();
       expect(() => {
-        StellarBase.Operation.clawback({});
+        LantahBase.Operation.clawback({});
       }).to.throw();
     });
     it('returns a clawback()', function () {
       let account = 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
-      let asset = new StellarBase.Asset('GCOIN', account);
+      let asset = new LantahBase.Asset('GCOIN', account);
       const amount = '100.0000000';
-      const op = StellarBase.Operation.clawback({
+      const op = LantahBase.Operation.clawback({
         from: account,
         amount: amount,
         asset: asset
       });
 
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('clawback');
       expect(obj.asset.equals(asset)).to.be.true;
       expect(obj.from).to.be.equal(account);
@@ -2365,9 +2365,9 @@ describe('Operation', function () {
   describe('setTrustLineFlags()', function () {
     it('creates a SetTrustLineFlagsOp', function () {
       let account = 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
-      let asset = new StellarBase.Asset('GCOIN', account);
+      let asset = new LantahBase.Asset('GCOIN', account);
 
-      const op = StellarBase.Operation.setTrustLineFlags({
+      const op = LantahBase.Operation.setTrustLineFlags({
         trustor: account,
         asset: asset,
         flags: {
@@ -2381,10 +2381,10 @@ describe('Operation', function () {
       expect(opBody.setFlags()).to.be.equal(2);
 
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('setTrustLineFlags');
       expect(obj.asset.equals(asset)).to.be.true;
       expect(obj.trustor).to.be.equal(account);
@@ -2394,23 +2394,23 @@ describe('Operation', function () {
     });
     it('leaves unmodified flags as undefined', function () {
       let account = 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
-      let asset = new StellarBase.Asset('GCOIN', account);
+      let asset = new LantahBase.Asset('GCOIN', account);
 
       expect(() =>
-        StellarBase.Operation.setTrustLineFlags({
+        LantahBase.Operation.setTrustLineFlags({
           trustor: account,
           asset: asset
         })
       ).to.throw();
       expect(() =>
-        StellarBase.Operation.setTrustLineFlags({
+        LantahBase.Operation.setTrustLineFlags({
           trustor: account,
           asset: asset,
           flags: []
         })
       ).to.throw();
 
-      const op = StellarBase.Operation.setTrustLineFlags({
+      const op = LantahBase.Operation.setTrustLineFlags({
         trustor: account,
         asset: asset,
         flags: {
@@ -2421,10 +2421,10 @@ describe('Operation', function () {
       expect(opBody.setFlags()).to.be.equal(1);
 
       var xdr = op.toXDR('hex');
-      var operation = StellarBase.xdr.Operation.fromXDR(
+      var operation = LantahBase.xdr.Operation.fromXDR(
         Buffer.from(xdr, 'hex')
       );
-      var obj = StellarBase.Operation.fromXDRObject(operation);
+      var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('setTrustLineFlags');
       expect(obj.asset.equals(asset)).to.be.true;
       expect(obj.trustor).to.be.equal(account);
@@ -2434,7 +2434,7 @@ describe('Operation', function () {
     });
     it('fails with invalid flags', function () {
       expect(() => {
-        StellarBase.Operation.setTrustLineFlags({
+        LantahBase.Operation.setTrustLineFlags({
           trustor: account,
           asset: asset,
           flags: {
@@ -2446,46 +2446,46 @@ describe('Operation', function () {
     });
     it('should require parameters', function () {
       expect(() => {
-        StellarBase.Operation.setTrustLineFlags({});
+        LantahBase.Operation.setTrustLineFlags({});
       }).to.throw();
     });
   });
 
   describe('liquidityPoolDeposit()', function () {
     it('throws an error if a required parameter is missing', function () {
-      expect(() => StellarBase.Operation.liquidityPoolDeposit()).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolDeposit()).to.throw(
         /liquidityPoolId argument is required/
       );
 
       let opts = {};
-      expect(() => StellarBase.Operation.liquidityPoolDeposit(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolDeposit(opts)).to.throw(
         /liquidityPoolId argument is required/
       );
 
       opts.liquidityPoolId =
         'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7';
-      expect(() => StellarBase.Operation.liquidityPoolDeposit(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolDeposit(opts)).to.throw(
         /maxAmountA argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
       );
 
       opts.maxAmountA = '10';
-      expect(() => StellarBase.Operation.liquidityPoolDeposit(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolDeposit(opts)).to.throw(
         /maxAmountB argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
       );
 
       opts.maxAmountB = '20';
-      expect(() => StellarBase.Operation.liquidityPoolDeposit(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolDeposit(opts)).to.throw(
         /minPrice argument is required/
       );
 
       opts.minPrice = '0.45';
-      expect(() => StellarBase.Operation.liquidityPoolDeposit(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolDeposit(opts)).to.throw(
         /maxPrice argument is required/
       );
 
       opts.maxPrice = '0.55';
       expect(() =>
-        StellarBase.Operation.liquidityPoolDeposit(opts)
+        LantahBase.Operation.liquidityPoolDeposit(opts)
       ).to.not.throw();
     });
 
@@ -2498,7 +2498,7 @@ describe('Operation', function () {
         minPrice: '-0.45',
         maxPrice: '0.55'
       };
-      expect(() => StellarBase.Operation.liquidityPoolDeposit(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolDeposit(opts)).to.throw(
         /price must be positive/
       );
     });
@@ -2512,10 +2512,10 @@ describe('Operation', function () {
         minPrice: '0.45',
         maxPrice: '0.55'
       };
-      const op = StellarBase.Operation.liquidityPoolDeposit(opts);
+      const op = LantahBase.Operation.liquidityPoolDeposit(opts);
       const xdr = op.toXDR('hex');
 
-      const xdrObj = StellarBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
+      const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
         '100000000'
@@ -2524,7 +2524,7 @@ describe('Operation', function () {
         '200000000'
       );
 
-      const operation = StellarBase.Operation.fromXDRObject(xdrObj);
+      const operation = LantahBase.Operation.fromXDRObject(xdrObj);
       expect(operation.type).to.be.equal('liquidityPoolDeposit');
       expect(operation.liquidityPoolId).to.be.equals(opts.liquidityPoolId);
       expect(operation.maxAmountA).to.be.equals(opts.maxAmountA);
@@ -2548,10 +2548,10 @@ describe('Operation', function () {
           d: 20
         }
       };
-      const op = StellarBase.Operation.liquidityPoolDeposit(opts);
+      const op = LantahBase.Operation.liquidityPoolDeposit(opts);
       const xdr = op.toXDR('hex');
 
-      const xdrObj = StellarBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
+      const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
         '100000000'
@@ -2560,7 +2560,7 @@ describe('Operation', function () {
         '200000000'
       );
 
-      const operation = StellarBase.Operation.fromXDRObject(xdrObj);
+      const operation = LantahBase.Operation.fromXDRObject(xdrObj);
       expect(operation.type).to.be.equal('liquidityPoolDeposit');
       expect(operation.liquidityPoolId).to.be.equals(opts.liquidityPoolId);
       expect(operation.maxAmountA).to.be.equals(opts.maxAmountA);
@@ -2582,10 +2582,10 @@ describe('Operation', function () {
         minPrice: 0.45,
         maxPrice: 0.55
       };
-      const op = StellarBase.Operation.liquidityPoolDeposit(opts);
+      const op = LantahBase.Operation.liquidityPoolDeposit(opts);
       const xdr = op.toXDR('hex');
 
-      const xdrObj = StellarBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
+      const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
         '100000000'
@@ -2594,7 +2594,7 @@ describe('Operation', function () {
         '200000000'
       );
 
-      const operation = StellarBase.Operation.fromXDRObject(xdrObj);
+      const operation = LantahBase.Operation.fromXDRObject(xdrObj);
       expect(operation.type).to.be.equal('liquidityPoolDeposit');
       expect(operation.liquidityPoolId).to.be.equals(opts.liquidityPoolId);
       expect(operation.maxAmountA).to.be.equals(opts.maxAmountA);
@@ -2612,10 +2612,10 @@ describe('Operation', function () {
         minPrice: new BigNumber(9).dividedBy(20),
         maxPrice: new BigNumber(11).dividedBy(20)
       };
-      const op = StellarBase.Operation.liquidityPoolDeposit(opts);
+      const op = LantahBase.Operation.liquidityPoolDeposit(opts);
       const xdr = op.toXDR('hex');
 
-      const xdrObj = StellarBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
+      const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
         '100000000'
@@ -2624,7 +2624,7 @@ describe('Operation', function () {
         '200000000'
       );
 
-      const operation = StellarBase.Operation.fromXDRObject(xdrObj);
+      const operation = LantahBase.Operation.fromXDRObject(xdrObj);
       expect(operation.type).to.be.equal('liquidityPoolDeposit');
       expect(operation.liquidityPoolId).to.be.equals(opts.liquidityPoolId);
       expect(operation.maxAmountA).to.be.equals(opts.maxAmountA);
@@ -2636,34 +2636,34 @@ describe('Operation', function () {
 
   describe('liquidityPoolWithdraw()', function () {
     it('throws an error if a required parameter is missing', function () {
-      expect(() => StellarBase.Operation.liquidityPoolWithdraw()).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolWithdraw()).to.throw(
         /liquidityPoolId argument is required/
       );
 
       let opts = {};
-      expect(() => StellarBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
         /liquidityPoolId argument is required/
       );
 
       opts.liquidityPoolId =
         'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7';
-      expect(() => StellarBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
         /amount argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
       );
 
       opts.amount = '10';
-      expect(() => StellarBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
         /minAmountA argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
       );
 
       opts.minAmountA = '10000';
-      expect(() => StellarBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
+      expect(() => LantahBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
         /minAmountB argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
       );
 
       opts.minAmountB = '20000';
       expect(() =>
-        StellarBase.Operation.liquidityPoolWithdraw(opts)
+        LantahBase.Operation.liquidityPoolWithdraw(opts)
       ).to.not.throw();
     });
 
@@ -2675,10 +2675,10 @@ describe('Operation', function () {
         minAmountA: '10.0000000',
         minAmountB: '20.0000000'
       };
-      const op = StellarBase.Operation.liquidityPoolWithdraw(opts);
+      const op = LantahBase.Operation.liquidityPoolWithdraw(opts);
       const xdr = op.toXDR('hex');
 
-      const xdrObj = StellarBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
+      const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolWithdraw');
       expect(xdrObj.body().value().amount().toString()).to.equal('50000000');
       expect(xdrObj.body().value().minAmountA().toString()).to.equal(
@@ -2688,7 +2688,7 @@ describe('Operation', function () {
         '200000000'
       );
 
-      const operation = StellarBase.Operation.fromXDRObject(xdrObj);
+      const operation = LantahBase.Operation.fromXDRObject(xdrObj);
       expect(operation.type).to.be.equal('liquidityPoolWithdraw');
       expect(operation.liquidityPoolId).to.be.equals(opts.liquidityPoolId);
       expect(operation.amount).to.be.equals(opts.amount);
@@ -2707,7 +2707,7 @@ describe('Operation', function () {
       ];
 
       for (var i in amounts) {
-        expect(StellarBase.Operation.isValidAmount(amounts[i])).to.be.true;
+        expect(LantahBase.Operation.isValidAmount(amounts[i])).to.be.true;
       }
     });
 
@@ -2729,27 +2729,27 @@ describe('Operation', function () {
       ];
 
       for (var i in amounts) {
-        expect(StellarBase.Operation.isValidAmount(amounts[i])).to.be.false;
+        expect(LantahBase.Operation.isValidAmount(amounts[i])).to.be.false;
       }
     });
 
     it('allows 0 only if allowZero argument is set to true', function () {
-      expect(StellarBase.Operation.isValidAmount('0')).to.be.false;
-      expect(StellarBase.Operation.isValidAmount('0', true)).to.be.true;
+      expect(LantahBase.Operation.isValidAmount('0')).to.be.false;
+      expect(LantahBase.Operation.isValidAmount('0', true)).to.be.true;
     });
   });
 
   describe('._fromXDRAmount()', function () {
     it('correctly parses the amount', function () {
-      expect(StellarBase.Operation._fromXDRAmount(1)).to.be.equal('0.0000001');
-      expect(StellarBase.Operation._fromXDRAmount(10000000)).to.be.equal(
+      expect(LantahBase.Operation._fromXDRAmount(1)).to.be.equal('0.0000001');
+      expect(LantahBase.Operation._fromXDRAmount(10000000)).to.be.equal(
         '1.0000000'
       );
-      expect(StellarBase.Operation._fromXDRAmount(10000000000)).to.be.equal(
+      expect(LantahBase.Operation._fromXDRAmount(10000000000)).to.be.equal(
         '1000.0000000'
       );
       expect(
-        StellarBase.Operation._fromXDRAmount(1000000000000000000)
+        LantahBase.Operation._fromXDRAmount(1000000000000000000)
       ).to.be.equal('100000000000.0000000');
     });
   });

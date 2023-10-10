@@ -3,37 +3,37 @@ import randomBytes from 'randombytes';
 
 describe('Transaction', function () {
   it('constructs Transaction object from a TransactionEnvelope', function (done) {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000.0000000';
 
-    let input = new StellarBase.TransactionBuilder(source, {
+    let input = new LantahBase.TransactionBuilder(source, {
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
-      .addMemo(StellarBase.Memo.text('Happy birthday!'))
-      .setTimeout(StellarBase.TimeoutInfinite)
+      .addMemo(LantahBase.Memo.text('Happy birthday!'))
+      .setTimeout(LantahBase.TimeoutInfinite)
       .build()
       .toEnvelope()
       .toXDR('base64');
 
-    var transaction = new StellarBase.Transaction(
+    var transaction = new LantahBase.Transaction(
       input,
-      StellarBase.Networks.TESTNET
+      LantahBase.Networks.TESTNET
     );
     var operation = transaction.operations[0];
 
     expect(transaction.source).to.be.equal(source.accountId());
     expect(transaction.fee).to.be.equal('100');
-    expect(transaction.memo.type).to.be.equal(StellarBase.MemoText);
+    expect(transaction.memo.type).to.be.equal(LantahBase.MemoText);
     expect(transaction.memo.value.toString('ascii')).to.be.equal(
       'Happy birthday!'
     );
@@ -46,24 +46,24 @@ describe('Transaction', function () {
 
   describe('toEnvelope', function () {
     beforeEach(function () {
-      let source = new StellarBase.Account(
+      let source = new LantahBase.Account(
         'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
         '0'
       );
       let destination =
         'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-      let asset = StellarBase.Asset.native();
+      let asset = LantahBase.Asset.native();
       let amount = '2000.0000000';
 
-      this.transaction = new StellarBase.TransactionBuilder(source, {
+      this.transaction = new LantahBase.TransactionBuilder(source, {
         fee: 100,
-        networkPassphrase: StellarBase.Networks.TESTNET
+        networkPassphrase: LantahBase.Networks.TESTNET
       })
         .addOperation(
-          StellarBase.Operation.payment({ destination, asset, amount })
+          LantahBase.Operation.payment({ destination, asset, amount })
         )
-        .addMemo(StellarBase.Memo.text('Happy birthday!'))
-        .setTimeout(StellarBase.TimeoutInfinite)
+        .addMemo(LantahBase.Memo.text('Happy birthday!'))
+        .setTimeout(LantahBase.TimeoutInfinite)
         .build();
     });
 
@@ -77,113 +77,113 @@ describe('Transaction', function () {
     it('does not return a reference to the source transaction', function () {
       const transaction = this.transaction;
       const envelope = transaction.toEnvelope().value();
-      envelope.tx().fee(StellarBase.xdr.Int64.fromString('300'));
+      envelope.tx().fee(LantahBase.xdr.Int64.fromString('300'));
 
       expect(transaction.tx.fee().toString()).to.equal('100');
     });
   });
 
   it('throws when a garbage Network is selected', () => {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000.0000000';
 
-    let input = new StellarBase.TransactionBuilder(source, {
+    let input = new LantahBase.TransactionBuilder(source, {
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
-      .addMemo(StellarBase.Memo.text('Happy birthday!'))
-      .setTimeout(StellarBase.TimeoutInfinite)
+      .addMemo(LantahBase.Memo.text('Happy birthday!'))
+      .setTimeout(LantahBase.TimeoutInfinite)
       .build()
       .toEnvelope()
       .toXDR('base64');
 
     expect(() => {
-      new StellarBase.Transaction(input, { garbage: 'yes' });
+      new LantahBase.Transaction(input, { garbage: 'yes' });
     }).to.throw(/expected a string/);
 
     expect(() => {
-      new StellarBase.Transaction(input, 1234);
+      new LantahBase.Transaction(input, 1234);
     }).to.throw(/expected a string/);
   });
 
   it('throws when a Network is not passed', () => {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000.0000000';
 
-    let input = new StellarBase.TransactionBuilder(source, {
+    let input = new LantahBase.TransactionBuilder(source, {
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
-      .addMemo(StellarBase.Memo.text('Happy birthday!'))
-      .setTimeout(StellarBase.TimeoutInfinite)
+      .addMemo(LantahBase.Memo.text('Happy birthday!'))
+      .setTimeout(LantahBase.TimeoutInfinite)
       .build()
       .toEnvelope()
       .toXDR('base64');
 
     expect(() => {
-      new StellarBase.Transaction(input);
+      new LantahBase.Transaction(input);
     }).to.throw(/expected a string/);
   });
 
   it('throws when no fee is provided', function () {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000';
 
     expect(() =>
-      new StellarBase.TransactionBuilder(source, {
-        networkPassphrase: StellarBase.Networks.TESTNET
+      new LantahBase.TransactionBuilder(source, {
+        networkPassphrase: LantahBase.Networks.TESTNET
       })
         .addOperation(
-          StellarBase.Operation.payment({ destination, asset, amount })
+          LantahBase.Operation.payment({ destination, asset, amount })
         )
-        .setTimeout(StellarBase.TimeoutInfinite)
+        .setTimeout(LantahBase.TimeoutInfinite)
         .build()
     ).to.throw(/must specify fee/);
   });
 
   it('signs correctly', function () {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000';
-    let signer = StellarBase.Keypair.master(StellarBase.Networks.TESTNET);
+    let signer = LantahBase.Keypair.master(LantahBase.Networks.TESTNET);
 
-    let tx = new StellarBase.TransactionBuilder(source, {
+    let tx = new LantahBase.TransactionBuilder(source, {
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
-      .setTimeout(StellarBase.TimeoutInfinite)
+      .setTimeout(LantahBase.TimeoutInfinite)
       .build();
     tx.sign(signer);
 
@@ -195,26 +195,26 @@ describe('Transaction', function () {
   });
 
   it('signs using hash preimage', function () {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000';
 
     let preimage = randomBytes(64);
-    let hash = StellarBase.hash(preimage);
+    let hash = LantahBase.hash(preimage);
 
-    let tx = new StellarBase.TransactionBuilder(source, {
+    let tx = new LantahBase.TransactionBuilder(source, {
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
-      .setTimeout(StellarBase.TimeoutInfinite)
+      .setTimeout(LantahBase.TimeoutInfinite)
       .build();
     tx.signHashX(preimage);
 
@@ -227,25 +227,25 @@ describe('Transaction', function () {
   });
 
   it('returns error when signing using hash preimage that is too long', function () {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000';
 
     let preimage = randomBytes(2 * 64);
 
-    let tx = new StellarBase.TransactionBuilder(source, {
+    let tx = new LantahBase.TransactionBuilder(source, {
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
-      .setTimeout(StellarBase.TimeoutInfinite)
+      .setTimeout(LantahBase.TimeoutInfinite)
       .build();
 
     expect(() => tx.signHashX(preimage)).to.throw(
@@ -257,24 +257,24 @@ describe('Transaction', function () {
     const sourceKey =
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB';
     // make two sources so they have the same seq number
-    const signedSource = new StellarBase.Account(sourceKey, '20');
-    const addedSignatureSource = new StellarBase.Account(sourceKey, '20');
+    const signedSource = new LantahBase.Account(sourceKey, '20');
+    const addedSignatureSource = new LantahBase.Account(sourceKey, '20');
     const destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    const asset = StellarBase.Asset.native();
+    const asset = LantahBase.Asset.native();
     const amount = '2000';
-    const signer = StellarBase.Keypair.master(StellarBase.Networks.TESTNET);
+    const signer = LantahBase.Keypair.master(LantahBase.Networks.TESTNET);
 
-    const signedTx = new StellarBase.TransactionBuilder(signedSource, {
+    const signedTx = new LantahBase.TransactionBuilder(signedSource, {
       timebounds: {
         minTime: 0,
         maxTime: 1739392569
       },
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
       .build();
 
@@ -283,7 +283,7 @@ describe('Transaction', function () {
 
     const envelopeSigned = signedTx.toEnvelope().value();
 
-    const addedSignatureTx = new StellarBase.TransactionBuilder(
+    const addedSignatureTx = new LantahBase.TransactionBuilder(
       addedSignatureSource,
       {
         timebounds: {
@@ -291,11 +291,11 @@ describe('Transaction', function () {
           maxTime: 1739392569
         },
         fee: 100,
-        networkPassphrase: StellarBase.Networks.TESTNET
+        networkPassphrase: LantahBase.Networks.TESTNET
       }
     )
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
       .build();
 
@@ -329,24 +329,24 @@ describe('Transaction', function () {
     const sourceKey =
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB';
     // make two sources so they have the same seq number
-    const signedSource = new StellarBase.Account(sourceKey, '20');
-    const addedSignatureSource = new StellarBase.Account(sourceKey, '20');
+    const signedSource = new LantahBase.Account(sourceKey, '20');
+    const addedSignatureSource = new LantahBase.Account(sourceKey, '20');
     const destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    const asset = StellarBase.Asset.native();
+    const asset = LantahBase.Asset.native();
     const amount = '2000';
-    const signer = StellarBase.Keypair.master(StellarBase.Networks.TESTNET);
+    const signer = LantahBase.Keypair.master(LantahBase.Networks.TESTNET);
 
-    const signedTx = new StellarBase.TransactionBuilder(signedSource, {
+    const signedTx = new LantahBase.TransactionBuilder(signedSource, {
       timebounds: {
         minTime: 0,
         maxTime: 1739392569
       },
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
       .build();
 
@@ -355,14 +355,14 @@ describe('Transaction', function () {
 
     const envelopeSigned = signedTx.toEnvelope().value();
 
-    const signature = new StellarBase.Transaction(
+    const signature = new LantahBase.Transaction(
       signedTx.toXDR(),
-      StellarBase.Networks.TESTNET
+      LantahBase.Networks.TESTNET
     ).getKeypairSignature(signer);
 
     expect(signer.sign(presignHash).toString('base64')).to.equal(signature);
 
-    const addedSignatureTx = new StellarBase.TransactionBuilder(
+    const addedSignatureTx = new LantahBase.TransactionBuilder(
       addedSignatureSource,
       {
         timebounds: {
@@ -370,11 +370,11 @@ describe('Transaction', function () {
           maxTime: 1739392569
         },
         fee: 100,
-        networkPassphrase: StellarBase.Networks.TESTNET
+        networkPassphrase: LantahBase.Networks.TESTNET
       }
     )
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
       .build();
 
@@ -406,25 +406,25 @@ describe('Transaction', function () {
     const sourceKey =
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB';
     // make two sources so they have the same seq number
-    const source = new StellarBase.Account(sourceKey, '20');
-    const sourceCopy = new StellarBase.Account(sourceKey, '20');
+    const source = new LantahBase.Account(sourceKey, '20');
+    const sourceCopy = new LantahBase.Account(sourceKey, '20');
     const destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    const asset = StellarBase.Asset.native();
+    const asset = LantahBase.Asset.native();
     const originalAmount = '2000';
     const alteredAmount = '1000';
-    const signer = StellarBase.Keypair.master(StellarBase.Networks.TESTNET);
+    const signer = LantahBase.Keypair.master(LantahBase.Networks.TESTNET);
 
-    const originalTx = new StellarBase.TransactionBuilder(source, {
+    const originalTx = new LantahBase.TransactionBuilder(source, {
       timebounds: {
         minTime: 0,
         maxTime: 1739392569
       },
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({
+        LantahBase.Operation.payment({
           destination,
           asset,
           amount: originalAmount
@@ -432,21 +432,21 @@ describe('Transaction', function () {
       )
       .build();
 
-    const signature = new StellarBase.Transaction(
+    const signature = new LantahBase.Transaction(
       originalTx.toXDR(),
-      StellarBase.Networks.TESTNET
+      LantahBase.Networks.TESTNET
     ).getKeypairSignature(signer);
 
-    const alteredTx = new StellarBase.TransactionBuilder(sourceCopy, {
+    const alteredTx = new LantahBase.TransactionBuilder(sourceCopy, {
       timebounds: {
         minTime: 0,
         maxTime: 1739392569
       },
       fee: 100,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({
+        LantahBase.Operation.payment({
           destination,
           asset,
           amount: alteredAmount
@@ -461,31 +461,31 @@ describe('Transaction', function () {
   });
 
   it('accepts 0 as a valid transaction fee', function (done) {
-    let source = new StellarBase.Account(
+    let source = new LantahBase.Account(
       'GBBM6BKZPEHWYO3E3YKREDPQXMS4VK35YLNU7NFBRI26RAN7GI5POFBB',
       '0'
     );
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
-    let asset = StellarBase.Asset.native();
+    let asset = LantahBase.Asset.native();
     let amount = '2000';
 
-    let input = new StellarBase.TransactionBuilder(source, {
+    let input = new LantahBase.TransactionBuilder(source, {
       fee: 0,
-      networkPassphrase: StellarBase.Networks.TESTNET
+      networkPassphrase: LantahBase.Networks.TESTNET
     })
       .addOperation(
-        StellarBase.Operation.payment({ destination, asset, amount })
+        LantahBase.Operation.payment({ destination, asset, amount })
       )
-      .addMemo(StellarBase.Memo.text('Happy birthday!'))
-      .setTimeout(StellarBase.TimeoutInfinite)
+      .addMemo(LantahBase.Memo.text('Happy birthday!'))
+      .setTimeout(LantahBase.TimeoutInfinite)
       .build()
       .toEnvelope()
       .toXDR('base64');
 
-    var transaction = new StellarBase.Transaction(
+    var transaction = new LantahBase.Transaction(
       input,
-      StellarBase.Networks.TESTNET
+      LantahBase.Networks.TESTNET
     );
     var operation = transaction.operations[0];
 
@@ -497,9 +497,9 @@ describe('Transaction', function () {
   it('outputs xdr as a string', () => {
     const xdrString =
       'AAAAAAW8Dk9idFR5Le+xi0/h/tU47bgC1YWjtPH1vIVO3BklAAAAZACoKlYAAAABAAAAAAAAAAEAAAALdmlhIGtleWJhc2UAAAAAAQAAAAAAAAAIAAAAAN7aGcXNPO36J1I8MR8S4QFhO79T5JGG2ZeS5Ka1m4mJAAAAAAAAAAFO3BklAAAAQP0ccCoeHdm3S7bOhMjXRMn3EbmETJ9glxpKUZjPSPIxpqZ7EkyTgl3FruieqpZd9LYOzdJrNik1GNBLhgTh/AU=';
-    const transaction = new StellarBase.Transaction(
+    const transaction = new LantahBase.Transaction(
       xdrString,
-      StellarBase.Networks.TESTNET
+      LantahBase.Networks.TESTNET
     );
     expect(typeof transaction).to.be.equal('object');
     expect(typeof transaction.toXDR).to.be.equal('function');
@@ -510,13 +510,13 @@ describe('Transaction', function () {
     it('handles muxed accounts', function () {
       let baseFee = '100';
       const networkPassphrase = 'Standalone Network ; February 2017';
-      const source = StellarBase.Keypair.master(networkPassphrase);
-      const account = new StellarBase.Account(source.publicKey(), '7');
+      const source = LantahBase.Keypair.master(networkPassphrase);
+      const account = new LantahBase.Account(source.publicKey(), '7');
       const destination =
         'GDQERENWDDSQZS7R7WKHZI3BSOYMV3FSWR7TFUYFTKQ447PIX6NREOJM';
       const amount = '2000.0000000';
-      const asset = StellarBase.Asset.native();
-      let tx = new StellarBase.TransactionBuilder(account, {
+      const asset = LantahBase.Asset.native();
+      let tx = new LantahBase.TransactionBuilder(account, {
         fee: baseFee,
         networkPassphrase: networkPassphrase,
         timebounds: {
@@ -525,23 +525,23 @@ describe('Transaction', function () {
         }
       })
         .addOperation(
-          StellarBase.Operation.payment({
+          LantahBase.Operation.payment({
             destination,
             asset,
             amount
           })
         )
-        .addMemo(StellarBase.Memo.text('Happy birthday!'))
+        .addMemo(LantahBase.Memo.text('Happy birthday!'))
         .build();
 
       // force the source to be muxed in the envelope
-      const muxedSource = new StellarBase.MuxedAccount(account, '0');
+      const muxedSource = new LantahBase.MuxedAccount(account, '0');
       const envelope = tx.toEnvelope();
       envelope.v1().tx().sourceAccount(muxedSource.toXDRObject());
 
       // force the payment destination to be muxed in the envelope
-      const destinationMuxed = new StellarBase.MuxedAccount(
-        new StellarBase.Account(destination, '1'),
+      const destinationMuxed = new LantahBase.MuxedAccount(
+        new LantahBase.Account(destination, '1'),
         '0'
       );
       envelope
@@ -553,7 +553,7 @@ describe('Transaction', function () {
         .destination(destinationMuxed.toXDRObject());
 
       // muxed properties should decode
-      const muxedTx = new StellarBase.Transaction(envelope, networkPassphrase);
+      const muxedTx = new LantahBase.Transaction(envelope, networkPassphrase);
       expect(tx.source).to.equal(source.publicKey());
       expect(muxedTx.source).to.be.equal(muxedSource.accountId());
       expect(muxedTx.operations[0].destination).to.be.equal(
@@ -566,34 +566,34 @@ describe('Transaction', function () {
     const address = 'GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ';
 
     const makeBuilder = function (source) {
-      return new StellarBase.TransactionBuilder(source, {
-        fee: StellarBase.BASE_FEE,
-        networkPassphrase: StellarBase.Networks.TESTNET,
+      return new LantahBase.TransactionBuilder(source, {
+        fee: LantahBase.BASE_FEE,
+        networkPassphrase: LantahBase.Networks.TESTNET,
         withMuxing: true
-      }).setTimeout(StellarBase.TimeoutInfinite);
+      }).setTimeout(LantahBase.TimeoutInfinite);
     };
 
     const makeClaimableBalance = function () {
-      return StellarBase.Operation.createClaimableBalance({
-        asset: StellarBase.Asset.native(),
+      return LantahBase.Operation.createClaimableBalance({
+        asset: LantahBase.Asset.native(),
         amount: '100',
         claimants: [
-          new StellarBase.Claimant(
+          new LantahBase.Claimant(
             address,
-            StellarBase.Claimant.predicateUnconditional()
+            LantahBase.Claimant.predicateUnconditional()
           )
         ]
       });
     };
 
-    const paymentOp = StellarBase.Operation.payment({
+    const paymentOp = LantahBase.Operation.payment({
       destination: address,
-      asset: StellarBase.Asset.native(),
+      asset: LantahBase.Asset.native(),
       amount: '100'
     });
 
     it('calculates from transaction src', function () {
-      let gSource = new StellarBase.Account(address, '1234');
+      let gSource = new LantahBase.Account(address, '1234');
 
       let tx = makeBuilder(gSource)
         .addOperation(makeClaimableBalance())
@@ -606,7 +606,7 @@ describe('Transaction', function () {
 
     // See https://github.com/stellar/js-stellar-base/issues/529
     it('calculates from transaction src (big number sequence)', function () {
-      let gSource = new StellarBase.Account(address, '114272277834498050');
+      let gSource = new LantahBase.Account(address, '114272277834498050');
 
       let tx = makeBuilder(gSource)
         .addOperation(makeClaimableBalance())
@@ -618,8 +618,8 @@ describe('Transaction', function () {
     });
 
     it('calculates from muxed transaction src as if unmuxed', function () {
-      let gSource = new StellarBase.Account(address, '1234');
-      let mSource = new StellarBase.MuxedAccount(gSource, '5678');
+      let gSource = new LantahBase.Account(address, '1234');
+      let mSource = new LantahBase.MuxedAccount(gSource, '5678');
       let tx = makeBuilder(mSource)
         .addOperation(makeClaimableBalance())
         .build();
@@ -631,7 +631,7 @@ describe('Transaction', function () {
     });
 
     it('throws on invalid operations', function () {
-      let gSource = new StellarBase.Account(address, '1234');
+      let gSource = new LantahBase.Account(address, '1234');
       let tx = makeBuilder(gSource)
         .addOperation(paymentOp)
         .addOperation(makeClaimableBalance())
@@ -649,11 +649,11 @@ describe('Transaction', function () {
   describe('preconditions', function () {
     const address = 'GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ';
 
-    const source = new StellarBase.Account(address, '1234');
+    const source = new LantahBase.Account(address, '1234');
     const makeBuilder = function () {
-      return new StellarBase.TransactionBuilder(source, {
-        fee: StellarBase.BASE_FEE,
-        networkPassphrase: StellarBase.Networks.TESTNET,
+      return new LantahBase.TransactionBuilder(source, {
+        fee: LantahBase.BASE_FEE,
+        networkPassphrase: LantahBase.Networks.TESTNET,
         withMuxing: true
       });
     };
@@ -736,13 +736,13 @@ describe('Transaction', function () {
     it('extraSigners', function () {
       let tx = makeBuilder().setTimeout(5).setExtraSigners([address]).build();
       expect(tx.extraSigners).to.have.lengthOf(1);
-      expect(tx.extraSigners.map(StellarBase.SignerKey.encodeSignerKey)).to.eql(
+      expect(tx.extraSigners.map(LantahBase.SignerKey.encodeSignerKey)).to.eql(
         [address]
       );
 
       const signers = tx.toEnvelope().v1().tx().cond().v2().extraSigners();
       expect(signers).to.have.lengthOf(1);
-      expect(signers[0]).to.eql(StellarBase.SignerKey.decodeAddress(address));
+      expect(signers[0]).to.eql(LantahBase.SignerKey.decodeAddress(address));
     });
   });
 });

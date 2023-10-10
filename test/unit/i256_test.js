@@ -1,5 +1,5 @@
 // import { XdrWriter, XdrReader } from 'js-xdr';
-const I256 = StellarBase.Int256; // shorthand
+const I256 = LantahBase.Int256; // shorthand
 
 describe('I256.isValid', function () {
   it('returns true for I256 instances', function () {

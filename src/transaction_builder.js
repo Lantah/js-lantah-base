@@ -25,7 +25,7 @@ import { Memo } from './memo';
  * @constant
  * @see [Fees](https://developers.stellar.org/docs/glossary/fees/)
  */
-export const BASE_FEE = '100'; // Stroops
+export const BASE_FEE = '100'; // ug
 
 /**
  * @constant
@@ -51,7 +51,7 @@ export const TimeoutInfinite = 0;
  * source account.</p>
  *
  * <p><strong>Be careful about unsubmitted transactions!</strong> When you build
- * a transaction, stellar-sdk automatically increments the source account's
+ * a transaction, lantah-sdk automatically increments the source account's
  * sequence number. If you end up not submitting this transaction and submitting
  * another one instead, it'll fail due to the sequence number being wrong. So if
  * you decide not to use a built transaction, make sure to update the source
@@ -75,7 +75,7 @@ export const TimeoutInfinite = 0;
  *     destination: destinationB,
  *     amount: "100",
  *     asset: Asset.native()
- * })) // <- sends 100 XLM to destinationB
+ * })) // <- sends 100 GRAM to destinationB
  * .setTimeout(30)
  * .build();
  *
@@ -87,7 +87,7 @@ export const TimeoutInfinite = 0;
  * @param {Account} sourceAccount - source account for this transaction
  * @param {object}  opts          - Options object
  * @param {string}  opts.fee      - max fee you're willing to pay per
- *     operation in this transaction (**in stroops**)
+ *     operation in this transaction (**in ug**)
  *
  * @param {object}              [opts.timebounds] - timebounds for the
  *     validity of this transaction
@@ -130,7 +130,7 @@ export class TransactionBuilder {
     }
 
     if (opts.fee === undefined) {
-      throw new Error('must specify fee for the transaction (in stroops)');
+      throw new Error('must specify fee for the transaction (in ug)');
     }
 
     this.source = sourceAccount;
@@ -673,7 +673,7 @@ export class TransactionBuilder {
    *     in the form of either a Keypair (only the public key is used) or
    *     an account ID (in G... or M... form, but refer to `withMuxing`)
    * @param {string}          baseFee   - max fee willing to pay per operation
-   *     in inner transaction (**in stroops**)
+   *     in inner transaction (**in ug**)
    * @param {Transaction}     innerTx   - {@link Transaction} to be bumped by
    *     the fee bump transaction
    * @param {string}          networkPassphrase - passphrase of the target
@@ -702,7 +702,7 @@ export class TransactionBuilder {
     // The fee rate for fee bump is at least the fee rate of the inner transaction
     if (base.lt(innerBaseFeeRate)) {
       throw new Error(
-        `Invalid baseFee, it should be at least ${innerBaseFeeRate} stroops.`
+        `Invalid baseFee, it should be at least ${innerBaseFeeRate} ug.`
       );
     }
 
@@ -711,7 +711,7 @@ export class TransactionBuilder {
     // The fee rate is at least the minimum fee
     if (base.lt(minBaseFee)) {
       throw new Error(
-        `Invalid baseFee, it should be at least ${minBaseFee} stroops.`
+        `Invalid baseFee, it should be at least ${minBaseFee} ug.`
       );
     }
 

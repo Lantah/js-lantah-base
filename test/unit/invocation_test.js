@@ -9,7 +9,7 @@ const {
   nativeToScVal,
   buildInvocationTree,
   walkInvocationTree
-} = StellarBase;
+} = LantahBase;
 
 // Here's a complicated invocation tree whose pseudo-structure is supposed to
 // represent a high-level contract interaction involving two transfers of native
@@ -18,13 +18,13 @@ const {
 // Though this may feel contrived (because it is), it highlights the importance
 // of presenting complex invocation trees in a friendly manner to users.
 //
-// purchase("SomeNft:G...", 7 xlm)
+// purchase("SomeNft:G...", 7 gram)
 //     |
 //     +--- create(wrap: "SomeNft:G...")
 //     |
-//     +--- swap(xlm, usdc, from, to)
+//     +--- swap(gram, usdc, from, to)
 //     |      |
-//     |      |- xlm.transfer(from, to, 7)
+//     |      |- gram.transfer(from, to, 7)
 //     |      |
 //     |      |- usdc.transfer(to, from, 1)
 //     |
@@ -47,7 +47,7 @@ function makeInvocation(contract, name, ...args) {
 
 describe('parsing invocation trees', function () {
   const invoker = rk();
-  const [nftContract, swapContract, xlmContract, usdcContract] = [
+  const [nftContract, swapContract, gramContract, usdcContract] = [
     1, 2, 3, 4
   ].map(() => {
     // ezpz method to generate random contract IDs
@@ -86,7 +86,7 @@ describe('parsing invocation trees', function () {
         subInvocations: [
           new xdr.SorobanAuthorizedInvocation({
             function: makeInvocation(
-              xlmContract,
+              gramContract,
               'transfer',
               new Address(invoker).toScVal(),
               '7'
@@ -161,7 +161,7 @@ describe('parsing invocation trees', function () {
           {
             type: 'execute',
             args: {
-              source: xlmContract.contractId(),
+              source: gramContract.contractId(),
               function: 'transfer',
               args: [invoker, '7']
             },

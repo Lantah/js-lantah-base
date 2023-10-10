@@ -1,43 +1,37 @@
-# JS Stellar Base
+# JS Lantah Base
 
-[![Tests](https://github.com/stellar/js-stellar-base/actions/workflows/tests.yml/badge.svg)](https://github.com/stellar/js-stellar-base/actions/workflows/tests.yml)
-[![Code Climate](https://codeclimate.com/github/stellar/js-stellar-base/badges/gpa.svg)](https://codeclimate.com/github/stellar/js-stellar-base)
-[![Coverage Status](https://coveralls.io/repos/stellar/js-stellar-base/badge.svg?branch=master&service=github)](https://coveralls.io/github/stellar/js-stellar-base?branch=master)
-[![Dependency Status](https://david-dm.org/stellar/js-stellar-base.svg)](https://david-dm.org/stellar/js-stellar-base)
-
-The stellar-base library is the lowest-level stellar helper library. It consists
+The lantah-base library is the lowest-level lantah helper library. It consists
 of classes to read, write, hash, and sign the xdr structures that are used in
-[stellar-core](https://github.com/stellar/stellar-core). This is an
+[gravity](https://github.com/lantah/gravity). This is an
 implementation in JavaScript that can be used on either Node.js or web browsers.
 
-- **[API Reference](https://stellar.github.io/js-stellar-base/)**
 
 > **Warning!** The Node version of this package uses the [`sodium-native`](https://www.npmjs.com/package/sodium-native) package, a native implementation of [Ed25519](https://ed25519.cr.yp.to/) in Node.js, as an [optional dependency](https://docs.npmjs.com/files/package.json#optionaldependencies).
-> This means that if for any reason installation of this package fails, `stellar-base` will fallback to the much slower implementation contained in [`tweetnacl`](https://www.npmjs.com/package/tweetnacl).
+> This means that if for any reason installation of this package fails, `lantah-base` will fallback to the much slower implementation contained in [`tweetnacl`](https://www.npmjs.com/package/tweetnacl).
 >
 > If you'd explicitly prefer **not** to install the `sodium-native` package, pass the appropriate flag to skip optional dependencies when installing this package (e.g. `--no-optional` if using `npm install` or `--without-optional` using `yarn install`).
 >
-> If you are using `stellar-base` in a browser you can ignore this. However, for production backend deployments you should most likely be using `sodium-native`.
+> If you are using `lantah-base` in a browser you can ignore this. However, for production backend deployments you should most likely be using `sodium-native`.
 > If `sodium-native` is successfully installed and working,
-> `StellarBase.FastSigning` variable will be equal `true`. Otherwise it will be
+> `LantahBase.FastSigning` variable will be equal `true`. Otherwise it will be
 > `false`.
 
 ## Quick start
 
-Using yarn to include js-stellar-base in your own project:
+Using yarn to include js-lantah-base in your own project:
 
 ```shell
-yarn add stellar-base
+yarn add lantah-base
 ```
 
 For browsers, [use Bower to install it](#to-use-in-the-browser). It exports a
-variable `StellarBase`. The example below assumes you have `stellar-base.js`
+variable `lantahBase`. The example below assumes you have `lantah-base.js`
 relative to your html file.
 
 ```html
-<script src="stellar-base.js"></script>
+<script src="lantah-base.js"></script>
 <script>
-  console.log(StellarBase);
+  console.log(LantahBase);
 </script>
 ```
 
@@ -48,13 +42,13 @@ relative to your html file.
 1. Install it using yarn:
 
 ```shell
-yarn add stellar-base
+yarn add lantah-base
 ```
 
 2. require/import it in your JavaScript:
 
 ```js
-var StellarBase = require('stellar-base');
+var LantahBase = require('lantah-base');
 ```
 
 ### To self host for use in the browser
@@ -62,15 +56,15 @@ var StellarBase = require('stellar-base');
 1. Install it using [bower](http://bower.io):
 
 ```shell
-bower install stellar-base
+bower install lantah-base
 ```
 
 2. Include it in the browser:
 
 ```html
-<script src="./bower_components/stellar-base/stellar-base.js"></script>
+<script src="./bower_components/lantah-base/lantah-base.js"></script>
 <script>
-  console.log(StellarBase);
+  console.log(LantahBase);
 </script>
 ```
 
@@ -86,7 +80,7 @@ If you don't want to use install Bower, you can copy built JS files from the
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-base/{version}/stellar-base.js"></script>
 <script>
-  console.log(StellarBase);
+  console.log(LantahBase);
 </script>
 ```
 
@@ -94,9 +88,9 @@ Note that this method relies using a third party to host the JS library. This
 may not be entirely secure.
 
 Make sure that you are using the latest version number. They can be found on the
-[releases page in Github](https://github.com/stellar/js-stellar-base/releases).
+[releases page in Github](https://github.com/lantah/js-lantah-base/releases).
 
-### To develop and test js-stellar-base itself
+### To develop and test js-lantah-base itself
 
 1. Install Node 16.x
 
@@ -115,13 +109,13 @@ This project uses [Yarn](https://yarnpkg.com/) to manages its dependencies. To i
 3. Clone the repo
 
 ```shell
-git clone https://github.com/stellar/js-stellar-base.git
+git clone https://github.com/lantah/js-lantah-base.git
 ```
 
-4. Install dependencies inside js-stellar-base folder
+4. Install dependencies inside js-lantah-base folder
 
 ```shell
-cd js-stellar-base
+cd js-lantah-base
 yarn
 ```
 
@@ -151,7 +145,7 @@ earlier versions of Node, so the tests need to run on those versions.)
 
 ## Usage
 
-For information on how to use js-stellar-base, take a look at the docs in the
+For information on how to use js-lantah-base, take a look at the docs in the
 [docs folder](./docs).
 
 ## Testing
@@ -194,5 +188,5 @@ npm >= 2.13.0 required. Read more about
 
 ## License
 
-js-stellar-base is licensed under an Apache-2.0 license. See the
+js-lantah-base is licensed under an Apache-2.0 license. See the
 [LICENSE](./LICENSE) file for details.

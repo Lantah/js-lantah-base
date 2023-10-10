@@ -25,7 +25,7 @@ describe('Soroban', function () {
     SUCCESS_TEST_CASES.forEach((testCase) => {
       it(`returns ${testCase.expected} for ${testCase.amount} with ${testCase.decimals} decimals`, function () {
         expect(
-          StellarBase.Soroban.formatTokenAmount(
+          LantahBase.Soroban.formatTokenAmount(
             testCase.amount,
             testCase.decimals
           )
@@ -36,7 +36,7 @@ describe('Soroban', function () {
     FAILED_TEST_CASES.forEach((testCase) => {
       it(`fails on the input with decimals`, function () {
         expect(() =>
-          StellarBase.Soroban.formatTokenAmount(
+          LantahBase.Soroban.formatTokenAmount(
             testCase.amount,
             testCase.decimals
           )
@@ -63,7 +63,7 @@ describe('Soroban', function () {
     SUCCESS_TEST_CASES.forEach((testCase) => {
       it(`returns ${testCase.expected} for ${testCase.amount} of a token with ${testCase.decimals} decimals`, function () {
         expect(
-          StellarBase.Soroban.parseTokenAmount(
+          LantahBase.Soroban.parseTokenAmount(
             testCase.amount,
             testCase.decimals
           )
@@ -74,7 +74,7 @@ describe('Soroban', function () {
     FAILED_TEST_CASES.forEach((testCase) => {
       it(`fails on the input with more than one decimals`, function () {
         expect(() =>
-          StellarBase.Soroban.parseTokenAmount(
+          LantahBase.Soroban.parseTokenAmount(
             testCase.amount,
             testCase.decimals
           )

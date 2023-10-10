@@ -10,7 +10,7 @@ module.exports = function (config) {
     browsers: ['FirefoxHeadless', 'ChromeHeadless'],
 
     files: [
-      '../dist/stellar-base.js', // webpack should build this first
+      '../dist/lantah-base.js', // webpack should build this first
       '../test/test-helper.js',
       '../test/unit/**/*.js'
     ],

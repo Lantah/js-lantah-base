@@ -1,4 +1,4 @@
-const { Contract, xdr } = StellarBase;
+const { Contract, xdr } = LantahBase;
 const NULL_ADDRESS = 'CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM';
 
 describe('Contract', function () {
@@ -38,7 +38,7 @@ describe('Contract', function () {
       const expected = [
         new xdr.LedgerKey.contractCode(
           new xdr.LedgerKeyContractCode({
-            hash: StellarBase.StrKey.decodeContract(contract.contractId())
+            hash: LantahBase.StrKey.decodeContract(contract.contractId())
           })
         ),
         new xdr.LedgerKey.contractData(
@@ -58,8 +58,8 @@ describe('Contract', function () {
     const contract = new Contract(NULL_ADDRESS);
     let call = contract.call(
       'method',
-      StellarBase.nativeToScVal('arg!'),
-      StellarBase.nativeToScVal(2, { type: 'i32' })
+      LantahBase.nativeToScVal('arg!'),
+      LantahBase.nativeToScVal(2, { type: 'i32' })
     );
 
     it('works with no parameters', function () {

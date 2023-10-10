@@ -6,8 +6,8 @@ describe('muxed account abstraction works', function () {
     'MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAABUTGI4';
 
   it('generates addresses correctly', function () {
-    let baseAccount = new StellarBase.Account(PUBKEY, '1');
-    const mux = new StellarBase.MuxedAccount(baseAccount, '0');
+    let baseAccount = new LantahBase.Account(PUBKEY, '1');
+    const mux = new LantahBase.MuxedAccount(baseAccount, '0');
     expect(mux.baseAccount().accountId()).to.equal(PUBKEY);
     expect(mux.accountId()).to.equal(MPUBKEY_ZERO);
     expect(mux.id()).to.equal('0');
@@ -17,26 +17,26 @@ describe('muxed account abstraction works', function () {
 
     const muxXdr = mux.toXDRObject();
     expect(muxXdr.switch()).to.equal(
-      StellarBase.xdr.CryptoKeyType.keyTypeMuxedEd25519()
+      LantahBase.xdr.CryptoKeyType.keyTypeMuxedEd25519()
     );
 
     const innerMux = muxXdr.med25519();
     expect(
       innerMux
         .ed25519()
-        .equals(StellarBase.StrKey.decodeEd25519PublicKey(PUBKEY))
+        .equals(LantahBase.StrKey.decodeEd25519PublicKey(PUBKEY))
     ).to.be.true;
-    expect(innerMux.id()).to.eql(StellarBase.xdr.Uint64.fromString('420'));
+    expect(innerMux.id()).to.eql(LantahBase.xdr.Uint64.fromString('420'));
 
-    expect(StellarBase.encodeMuxedAccountToAddress(muxXdr)).to.equal(
+    expect(LantahBase.encodeMuxedAccountToAddress(muxXdr)).to.equal(
       mux.accountId()
     );
   });
 
   it('tracks sequence numbers correctly', function () {
-    let baseAccount = new StellarBase.Account(PUBKEY, '12345');
-    const mux1 = new StellarBase.MuxedAccount(baseAccount, '1');
-    const mux2 = new StellarBase.MuxedAccount(baseAccount, '2');
+    let baseAccount = new LantahBase.Account(PUBKEY, '12345');
+    const mux1 = new LantahBase.MuxedAccount(baseAccount, '1');
+    const mux2 = new LantahBase.MuxedAccount(baseAccount, '2');
 
     expect(baseAccount.sequenceNumber()).to.equal('12345');
     expect(mux1.sequenceNumber()).to.equal('12345');
@@ -62,15 +62,15 @@ describe('muxed account abstraction works', function () {
   });
 
   it('lets virtual accounts be created', function () {
-    let baseAccount = new StellarBase.Account(PUBKEY, '12345');
-    const mux1 = new StellarBase.MuxedAccount(baseAccount, '1');
+    let baseAccount = new LantahBase.Account(PUBKEY, '12345');
+    const mux1 = new LantahBase.MuxedAccount(baseAccount, '1');
 
-    const mux2 = new StellarBase.MuxedAccount(mux1.baseAccount(), '420');
+    const mux2 = new LantahBase.MuxedAccount(mux1.baseAccount(), '420');
     expect(mux2.id()).to.equal('420');
     expect(mux2.accountId()).to.equal(MPUBKEY_ID);
     expect(mux2.sequenceNumber()).to.equal('12345');
 
-    const mux3 = new StellarBase.MuxedAccount(mux2.baseAccount(), '3');
+    const mux3 = new LantahBase.MuxedAccount(mux2.baseAccount(), '3');
 
     mux2.incrementSequenceNumber();
     expect(mux1.sequenceNumber()).to.equal('12346');
@@ -79,7 +79,7 @@ describe('muxed account abstraction works', function () {
   });
 
   it('parses M-addresses', function () {
-    const mux1 = new StellarBase.MuxedAccount.fromAddress(MPUBKEY_ZERO, '123');
+    const mux1 = new LantahBase.MuxedAccount.fromAddress(MPUBKEY_ZERO, '123');
     expect(mux1.id()).to.equal('0');
     expect(mux1.accountId()).to.equal(MPUBKEY_ZERO);
     expect(mux1.baseAccount().accountId()).to.equal(

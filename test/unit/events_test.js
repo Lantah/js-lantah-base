@@ -1,9 +1,9 @@
 const [nativeToScVal, scValToNative, ScInt, humanizeEvents, xdr] = [
-  StellarBase.nativeToScVal,
-  StellarBase.scValToNative,
-  StellarBase.ScInt,
-  StellarBase.humanizeEvents,
-  StellarBase.xdr
+  LantahBase.nativeToScVal,
+  LantahBase.scValToNative,
+  LantahBase.ScInt,
+  LantahBase.humanizeEvents,
+  LantahBase.xdr
 ]; // shorthand
 
 describe('humanizing raw events', function () {
@@ -25,7 +25,7 @@ describe('humanizing raw events', function () {
       inSuccessfulContractCall: true,
       event: new xdr.ContractEvent({
         ext: new xdr.ExtensionPoint(0),
-        contractId: StellarBase.StrKey.decodeContract(contractId),
+        contractId: LantahBase.StrKey.decodeContract(contractId),
         type: xdr.ContractEventType.contract(),
         body: cloneAndSet({
           topics: topics1,
@@ -41,7 +41,7 @@ describe('humanizing raw events', function () {
   });
 
   it('makes diagnostic events human-readable', function () {
-    const readable = StellarBase.humanizeEvents(events);
+    const readable = LantahBase.humanizeEvents(events);
 
     expect(readable.length).to.equal(events.length, `${events} != ${readable}`);
     expect(readable[0]).to.eql({

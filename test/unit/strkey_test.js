@@ -1,33 +1,33 @@
 describe('StrKey', function () {
   beforeEach(function () {
-    var keypair = StellarBase.Keypair.master(
+    var keypair = LantahBase.Keypair.master(
       'Test SDF Network ; September 2015'
     );
     this.unencodedBuffer = keypair.rawPublicKey();
     this.unencoded = this.unencodedBuffer.toString();
     this.accountIdEncoded = keypair.publicKey();
-    this.seedEncoded = StellarBase.StrKey.encodeEd25519SecretSeed(
+    this.seedEncoded = LantahBase.StrKey.encodeEd25519SecretSeed(
       this.unencodedBuffer
     );
   });
   describe('#decodeCheck', function () {
     it('decodes correctly', function () {
       expect(
-        StellarBase.StrKey.decodeEd25519PublicKey(this.accountIdEncoded)
+        LantahBase.StrKey.decodeEd25519PublicKey(this.accountIdEncoded)
       ).to.eql(this.unencodedBuffer);
       expect(
-        StellarBase.StrKey.decodeEd25519SecretSeed(this.seedEncoded)
+        LantahBase.StrKey.decodeEd25519SecretSeed(this.seedEncoded)
       ).to.eql(this.unencodedBuffer);
     });
 
     it('throws an error when the version byte is wrong', function () {
       expect(() =>
-        StellarBase.StrKey.decodeEd25519SecretSeed(
+        LantahBase.StrKey.decodeEd25519SecretSeed(
           'GBPXXOA5N4JYPESHAADMQKBPWZWQDQ64ZV6ZL2S3LAGW4SY7NTCMWIVL'
         )
       ).to.throw(/invalid version/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519PublicKey(
+        LantahBase.StrKey.decodeEd25519PublicKey(
           'SBGWKM3CD4IL47QN6X54N6Y33T3JDNVI6AIJ6CD5IM47HG3IG4O36XCU'
         )
       ).to.throw(/invalid version/);
@@ -36,53 +36,53 @@ describe('StrKey', function () {
     it('throws an error when decoded data encodes to other string', function () {
       // accountId
       expect(() =>
-        StellarBase.StrKey.decodeEd25519PublicKey(
+        LantahBase.StrKey.decodeEd25519PublicKey(
           'GBPXX0A5N4JYPESHAADMQKBPWZWQDQ64ZV6ZL2S3LAGW4SY7NTCMWIVL'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519PublicKey(
+        LantahBase.StrKey.decodeEd25519PublicKey(
           'GCFZB6L25D26RQFDWSSBDEYQ32JHLRMTT44ZYE3DZQUTYOL7WY43PLBG++'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519PublicKey(
+        LantahBase.StrKey.decodeEd25519PublicKey(
           'GADE5QJ2TY7S5ZB65Q43DFGWYWCPHIYDJ2326KZGAGBN7AE5UY6JVDRRA'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519PublicKey(
+        LantahBase.StrKey.decodeEd25519PublicKey(
           'GB6OWYST45X57HCJY5XWOHDEBULB6XUROWPIKW77L5DSNANBEQGUPADT2'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519PublicKey(
+        LantahBase.StrKey.decodeEd25519PublicKey(
           'GB6OWYST45X57HCJY5XWOHDEBULB6XUROWPIKW77L5DSNANBEQGUPADT2T'
         )
       ).to.throw(/invalid encoded string/);
       // seed
       expect(() =>
-        StellarBase.StrKey.decodeEd25519SecretSeed(
+        LantahBase.StrKey.decodeEd25519SecretSeed(
           'SB7OJNF5727F3RJUG5ASQJ3LUM44ELLNKW35ZZQDHMVUUQNGYW'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519SecretSeed(
+        LantahBase.StrKey.decodeEd25519SecretSeed(
           'SB7OJNF5727F3RJUG5ASQJ3LUM44ELLNKW35ZZQDHMVUUQNGYWMEGB2W2'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519SecretSeed(
+        LantahBase.StrKey.decodeEd25519SecretSeed(
           'SB7OJNF5727F3RJUG5ASQJ3LUM44ELLNKW35ZZQDHMVUUQNGYWMEGB2W2T'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519SecretSeed(
+        LantahBase.StrKey.decodeEd25519SecretSeed(
           'SCMB30FQCIQAWZ4WQTS6SVK37LGMAFJGXOZIHTH2PY6EXLP37G46H6DT'
         )
       ).to.throw(/invalid encoded string/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519SecretSeed(
+        LantahBase.StrKey.decodeEd25519SecretSeed(
           'SAYC2LQ322EEHZYWNSKBEW6N66IRTDREEBUXXU5HPVZGMAXKLIZNM45H++'
         )
       ).to.throw(/invalid encoded string/);
@@ -90,12 +90,12 @@ describe('StrKey', function () {
 
     it('throws an error when the checksum is wrong', function () {
       expect(() =>
-        StellarBase.StrKey.decodeEd25519PublicKey(
+        LantahBase.StrKey.decodeEd25519PublicKey(
           'GBPXXOA5N4JYPESHAADMQKBPWZWQDQ64ZV6ZL2S3LAGW4SY7NTCMWIVT'
         )
       ).to.throw(/invalid checksum/);
       expect(() =>
-        StellarBase.StrKey.decodeEd25519SecretSeed(
+        LantahBase.StrKey.decodeEd25519SecretSeed(
           'SBGWKM3CD4IL47QN6X54N6Y33T3JDNVI6AIJ6CD5IM47HG3IG4O36XCX'
         )
       ).to.throw(/invalid checksum/);
@@ -105,47 +105,47 @@ describe('StrKey', function () {
   describe('#encodeCheck', function () {
     it('encodes a buffer correctly', function () {
       expect(
-        StellarBase.StrKey.encodeEd25519PublicKey(this.unencodedBuffer)
+        LantahBase.StrKey.encodeEd25519PublicKey(this.unencodedBuffer)
       ).to.eql(this.accountIdEncoded);
       expect(
-        StellarBase.StrKey.encodeEd25519PublicKey(this.unencodedBuffer)
+        LantahBase.StrKey.encodeEd25519PublicKey(this.unencodedBuffer)
       ).to.match(/^G/);
       expect(
-        StellarBase.StrKey.encodeEd25519SecretSeed(this.unencodedBuffer)
+        LantahBase.StrKey.encodeEd25519SecretSeed(this.unencodedBuffer)
       ).to.eql(this.seedEncoded);
       expect(
-        StellarBase.StrKey.encodeEd25519SecretSeed(this.unencodedBuffer)
+        LantahBase.StrKey.encodeEd25519SecretSeed(this.unencodedBuffer)
       ).to.match(/^S/);
 
       var strkeyEncoded;
 
-      strkeyEncoded = StellarBase.StrKey.encodePreAuthTx(this.unencodedBuffer);
+      strkeyEncoded = LantahBase.StrKey.encodePreAuthTx(this.unencodedBuffer);
       expect(strkeyEncoded).to.match(/^T/);
-      expect(StellarBase.StrKey.decodePreAuthTx(strkeyEncoded)).to.eql(
+      expect(LantahBase.StrKey.decodePreAuthTx(strkeyEncoded)).to.eql(
         this.unencodedBuffer
       );
 
-      strkeyEncoded = StellarBase.StrKey.encodeSha256Hash(this.unencodedBuffer);
+      strkeyEncoded = LantahBase.StrKey.encodeSha256Hash(this.unencodedBuffer);
       expect(strkeyEncoded).to.match(/^X/);
-      expect(StellarBase.StrKey.decodeSha256Hash(strkeyEncoded)).to.eql(
+      expect(LantahBase.StrKey.decodeSha256Hash(strkeyEncoded)).to.eql(
         this.unencodedBuffer
       );
     });
 
     it('encodes a buffer correctly', function () {
       expect(
-        StellarBase.StrKey.encodeEd25519PublicKey(this.unencodedBuffer)
+        LantahBase.StrKey.encodeEd25519PublicKey(this.unencodedBuffer)
       ).to.eql(this.accountIdEncoded);
       expect(
-        StellarBase.StrKey.encodeEd25519SecretSeed(this.unencodedBuffer)
+        LantahBase.StrKey.encodeEd25519SecretSeed(this.unencodedBuffer)
       ).to.eql(this.seedEncoded);
     });
 
     it('throws an error when the data is null', function () {
-      expect(() => StellarBase.StrKey.encodeEd25519SecretSeed(null)).to.throw(
+      expect(() => LantahBase.StrKey.encodeEd25519SecretSeed(null)).to.throw(
         /null data/
       );
-      expect(() => StellarBase.StrKey.encodeEd25519PublicKey(null)).to.throw(
+      expect(() => LantahBase.StrKey.encodeEd25519PublicKey(null)).to.throw(
         /null data/
       );
     });
@@ -167,7 +167,7 @@ describe('StrKey', function () {
       ];
 
       for (var i in keys) {
-        expect(StellarBase.StrKey.isValidEd25519PublicKey(keys[i])).to.be.true;
+        expect(LantahBase.StrKey.isValidEd25519PublicKey(keys[i])).to.be.true;
       }
     });
 
@@ -187,7 +187,7 @@ describe('StrKey', function () {
       ];
 
       for (var i in keys) {
-        expect(StellarBase.StrKey.isValidEd25519PublicKey(keys[i])).to.be.false;
+        expect(LantahBase.StrKey.isValidEd25519PublicKey(keys[i])).to.be.false;
       }
     });
   });
@@ -204,7 +204,7 @@ describe('StrKey', function () {
       ];
 
       for (var i in keys) {
-        expect(StellarBase.StrKey.isValidEd25519SecretSeed(keys[i])).to.be.true;
+        expect(LantahBase.StrKey.isValidEd25519SecretSeed(keys[i])).to.be.true;
       }
     });
 
@@ -219,7 +219,7 @@ describe('StrKey', function () {
       ];
 
       for (var i in keys) {
-        expect(StellarBase.StrKey.isValidEd25519SecretSeed(keys[i])).to.be
+        expect(LantahBase.StrKey.isValidEd25519SecretSeed(keys[i])).to.be
           .false;
       }
     });
@@ -235,45 +235,45 @@ describe('StrKey', function () {
 
   describe('#muxedAccounts', function () {
     it('encodes & decodes M... addresses correctly', function () {
-      expect(StellarBase.StrKey.encodeMed25519PublicKey(RAW_MPUBKEY)).to.equal(
+      expect(LantahBase.StrKey.encodeMed25519PublicKey(RAW_MPUBKEY)).to.equal(
         MPUBKEY
       );
       expect(
-        StellarBase.StrKey.decodeMed25519PublicKey(MPUBKEY).equals(RAW_MPUBKEY)
+        LantahBase.StrKey.decodeMed25519PublicKey(MPUBKEY).equals(RAW_MPUBKEY)
       ).to.be.true;
     });
 
     it('lets G... accounts pass through (unmuxed)', function () {
-      const unmuxed = StellarBase.decodeAddressToMuxedAccount(PUBKEY);
+      const unmuxed = LantahBase.decodeAddressToMuxedAccount(PUBKEY);
 
-      expect(StellarBase.xdr.MuxedAccount.isValid(unmuxed)).to.be.true;
+      expect(LantahBase.xdr.MuxedAccount.isValid(unmuxed)).to.be.true;
       expect(unmuxed.switch()).to.equal(
-        StellarBase.xdr.CryptoKeyType.keyTypeEd25519()
+        LantahBase.xdr.CryptoKeyType.keyTypeEd25519()
       );
       expect(
         unmuxed
           .ed25519()
-          .equals(StellarBase.StrKey.decodeEd25519PublicKey(PUBKEY))
+          .equals(LantahBase.StrKey.decodeEd25519PublicKey(PUBKEY))
       ).to.be.true;
-      expect(StellarBase.encodeMuxedAccountToAddress(unmuxed)).to.equal(PUBKEY);
+      expect(LantahBase.encodeMuxedAccountToAddress(unmuxed)).to.equal(PUBKEY);
     });
 
     it('decodes underlying G... address correctly', function () {
-      expect(StellarBase.extractBaseAddress(MPUBKEY)).to.equal(PUBKEY);
-      expect(StellarBase.extractBaseAddress(PUBKEY)).to.equal(PUBKEY);
+      expect(LantahBase.extractBaseAddress(MPUBKEY)).to.equal(PUBKEY);
+      expect(LantahBase.extractBaseAddress(PUBKEY)).to.equal(PUBKEY);
     });
 
-    const RAW_PUBKEY = StellarBase.StrKey.decodeEd25519PublicKey(PUBKEY);
-    const unmuxed = StellarBase.xdr.MuxedAccount.keyTypeEd25519(RAW_PUBKEY);
+    const RAW_PUBKEY = LantahBase.StrKey.decodeEd25519PublicKey(PUBKEY);
+    const unmuxed = LantahBase.xdr.MuxedAccount.keyTypeEd25519(RAW_PUBKEY);
 
     it('encodes & decodes unmuxed keys', function () {
-      expect(StellarBase.xdr.MuxedAccount.isValid(unmuxed)).to.be.true;
+      expect(LantahBase.xdr.MuxedAccount.isValid(unmuxed)).to.be.true;
       expect(unmuxed.switch()).to.equal(
-        StellarBase.xdr.CryptoKeyType.keyTypeEd25519()
+        LantahBase.xdr.CryptoKeyType.keyTypeEd25519()
       );
       expect(unmuxed.ed25519().equals(RAW_PUBKEY)).to.be.true;
 
-      const pubkey = StellarBase.encodeMuxedAccountToAddress(unmuxed);
+      const pubkey = LantahBase.encodeMuxedAccountToAddress(unmuxed);
       expect(pubkey).to.equal(PUBKEY);
     });
 
@@ -302,18 +302,18 @@ describe('StrKey', function () {
 
     CASES.forEach((testCase) => {
       it(`encodes & decodes muxed key w/ ID=${testCase.id}`, function () {
-        const muxed = StellarBase.decodeAddressToMuxedAccount(testCase.strkey);
-        expect(StellarBase.xdr.MuxedAccount.isValid(muxed)).to.be.true;
+        const muxed = LantahBase.decodeAddressToMuxedAccount(testCase.strkey);
+        expect(LantahBase.xdr.MuxedAccount.isValid(muxed)).to.be.true;
         expect(muxed.switch()).to.equal(
-          StellarBase.xdr.CryptoKeyType.keyTypeMuxedEd25519()
+          LantahBase.xdr.CryptoKeyType.keyTypeMuxedEd25519()
         );
 
         const innerMux = muxed.med25519();
-        const id = StellarBase.xdr.Uint64.fromString(testCase.id);
+        const id = LantahBase.xdr.Uint64.fromString(testCase.id);
         expect(innerMux.ed25519().equals(unmuxed.ed25519())).to.be.true;
         expect(innerMux.id()).to.eql(id);
 
-        const mpubkey = StellarBase.encodeMuxedAccountToAddress(muxed);
+        const mpubkey = LantahBase.encodeMuxedAccountToAddress(muxed);
         expect(mpubkey).to.equal(testCase.strkey);
       });
     });
@@ -340,33 +340,33 @@ describe('StrKey', function () {
 
     HAPPY_PATHS.forEach((testCase) => {
       it(testCase.desc, function () {
-        const spBuf = StellarBase.StrKey.decodeSignedPayload(testCase.strkey);
-        const sp = StellarBase.xdr.SignerKeyEd25519SignedPayload.fromXDR(
+        const spBuf = LantahBase.StrKey.decodeSignedPayload(testCase.strkey);
+        const sp = LantahBase.xdr.SignerKeyEd25519SignedPayload.fromXDR(
           spBuf,
           'raw'
         );
 
-        const signer = StellarBase.StrKey.encodeEd25519PublicKey(sp.ed25519());
+        const signer = LantahBase.StrKey.encodeEd25519PublicKey(sp.ed25519());
         expect(signer).to.equal(testCase.ed25519);
 
         const payload = sp.payload().toString('hex');
         expect(payload).to.equal(testCase.payload);
 
-        const str = StellarBase.StrKey.encodeSignedPayload(sp.toXDR('raw'));
+        const str = LantahBase.StrKey.encodeSignedPayload(sp.toXDR('raw'));
         expect(str).to.equal(testCase.strkey);
       });
     });
 
     describe('payload bounds', function () {
-      let sp = new StellarBase.xdr.SignerKeyEd25519SignedPayload({
-        ed25519: StellarBase.StrKey.decodeEd25519PublicKey(
+      let sp = new LantahBase.xdr.SignerKeyEd25519SignedPayload({
+        ed25519: LantahBase.StrKey.decodeEd25519PublicKey(
           'GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ'
         ),
         payload: Buffer.alloc(0)
       });
       const isValid = (sp) => {
-        return StellarBase.StrKey.isValidSignedPayload(
-          StellarBase.StrKey.encodeSignedPayload(sp.toXDR('raw'))
+        return LantahBase.StrKey.isValidSignedPayload(
+          LantahBase.StrKey.encodeSignedPayload(sp.toXDR('raw'))
         );
       };
 
@@ -395,21 +395,21 @@ describe('StrKey', function () {
   describe('#contracts', function () {
     it('valid w/ 32-byte payload', function () {
       const strkey = 'CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE';
-      const buf = StellarBase.StrKey.decodeContract(strkey);
+      const buf = LantahBase.StrKey.decodeContract(strkey);
 
       expect(buf.toString('hex')).to.equal(
         '363eaa3867841fbad0f4ed88c779e4fe66e56a2470dc98c0ec9c073d05c7b103'
       );
 
-      expect(StellarBase.StrKey.encodeContract(buf)).to.equal(strkey);
+      expect(LantahBase.StrKey.encodeContract(buf)).to.equal(strkey);
     });
 
     it('isValid', function () {
       const valid = 'CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE';
-      expect(StellarBase.StrKey.isValidContract(valid)).to.be.true;
+      expect(LantahBase.StrKey.isValidContract(valid)).to.be.true;
       const invalid =
         'GA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE';
-      expect(StellarBase.StrKey.isValidContract(invalid)).to.be.false;
+      expect(LantahBase.StrKey.isValidContract(invalid)).to.be.false;
     });
   });
 
@@ -460,8 +460,8 @@ describe('StrKey', function () {
 
     BAD_STRKEYS.forEach((address) => {
       it(`fails in expected case ${address}`, function () {
-        const vb = StellarBase.StrKey.getVersionByteForPrefix(address);
-        expect(() => StellarBase.StrKey.decodeCheck(vb, address)).to.throw();
+        const vb = LantahBase.StrKey.getVersionByteForPrefix(address);
+        expect(() => LantahBase.StrKey.decodeCheck(vb, address)).to.throw();
       });
     });
   });

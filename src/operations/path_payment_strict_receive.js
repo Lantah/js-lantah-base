@@ -7,7 +7,7 @@ import { decodeAddressToMuxedAccount } from '../util/decode_encode_muxed_account
  * A `PathPaymentStrictReceive` operation sends the specified amount to the
  * destination account. It credits the destination with `destAmount` of
  * `destAsset`, while debiting at most `sendMax` of `sendAsset` from the source.
- * The transfer optionally occurs through a path. XLM payments create the
+ * The transfer optionally occurs through a path. GRAM payments create the
  * destination account if it does not exist.
  *
  * @function

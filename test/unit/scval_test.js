@@ -7,7 +7,7 @@ const {
   scValToNative,
   nativeToScVal,
   scValToBigInt
-} = StellarBase;
+} = LantahBase;
 
 describe('parsing and building ScVals', function () {
   const gigaMap = {
@@ -90,7 +90,7 @@ describe('parsing and building ScVals', function () {
   });
 
   it('converts ScVal to intended native types', function () {
-    const kp = StellarBase.Keypair.random();
+    const kp = LantahBase.Keypair.random();
     const inputVec = ['Hello', 'there.', 'General', 'Kenobi!'];
 
     [
@@ -117,7 +117,7 @@ describe('parsing and building ScVals', function () {
       [xdr.ScVal.scvString(Buffer.from('hello')), 'hello'], // ensure conversion
       [xdr.ScVal.scvSymbol(Buffer.from('hello')), 'hello'], // ensure conversion
       [
-        new StellarBase.Address(kp.publicKey()).toScVal(),
+        new LantahBase.Address(kp.publicKey()).toScVal(),
         (actual) => actual.toString() === kp.publicKey()
       ],
       [xdr.ScVal.scvVec(inputVec.map(xdr.ScVal.scvString)), inputVec],

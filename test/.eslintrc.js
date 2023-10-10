@@ -5,7 +5,7 @@ module.exports = {
   parser: '@babel/eslint-parser',
   plugins: ['@babel', 'prettier', 'prefer-import'],
   globals: {
-    StellarBase: true,
+    LantahBase: true,
     chai: true,
     sinon: true,
     expect: true

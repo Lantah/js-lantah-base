@@ -1,8 +1,8 @@
-const { Asset } = StellarBase;
+const { Asset } = LantahBase;
 
 describe('Asset', function () {
   describe('constructor', function () {
-    it("throws an error when there's no issuer for non XLM type asset", function () {
+    it("throws an error when there's no issuer for non GRAM type asset", function () {
       expect(() => new Asset('USD')).to.throw(/Issuer cannot be null/);
     });
 
@@ -38,7 +38,7 @@ describe('Asset', function () {
   describe('getCode()', function () {
     it('returns a code for a native asset object', function () {
       var asset = new Asset.native();
-      expect(asset.getCode()).to.be.equal('XLM');
+      expect(asset.getCode()).to.be.equal('GRAM');
     });
 
     it('returns a code for a non-native asset', function () {
@@ -95,19 +95,19 @@ describe('Asset', function () {
       const asset = new Asset.native();
 
       let xdr = asset.toXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.Asset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.Asset);
       expect(xdr.toXDR().toString()).to.be.equal(
         Buffer.from([0, 0, 0, 0]).toString()
       );
 
       xdr = asset.toChangeTrustXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.ChangeTrustAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.ChangeTrustAsset);
       expect(xdr.toXDR().toString()).to.be.equal(
         Buffer.from([0, 0, 0, 0]).toString()
       );
 
       xdr = asset.toTrustLineXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.TrustLineAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.TrustLineAsset);
       expect(xdr.toXDR().toString()).to.be.equal(
         Buffer.from([0, 0, 0, 0]).toString()
       );
@@ -120,19 +120,19 @@ describe('Asset', function () {
       );
 
       let xdr = asset.toXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.Asset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.Asset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum4');
       expect(xdr.value().assetCode()).to.equal('USD\0');
 
       xdr = asset.toChangeTrustXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.ChangeTrustAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.ChangeTrustAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum4');
       expect(xdr.value().assetCode()).to.equal('USD\0');
 
       xdr = asset.toTrustLineXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.TrustLineAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.TrustLineAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum4');
       expect(xdr.value().assetCode()).to.equal('USD\0');
@@ -144,19 +144,19 @@ describe('Asset', function () {
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
       );
       let xdr = asset.toXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.Asset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.Asset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum4');
       expect(xdr.value().assetCode()).to.equal('BART');
 
       xdr = asset.toChangeTrustXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.ChangeTrustAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.ChangeTrustAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum4');
       expect(xdr.value().assetCode()).to.equal('BART');
 
       xdr = asset.toTrustLineXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.TrustLineAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.TrustLineAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum4');
       expect(xdr.value().assetCode()).to.equal('BART');
@@ -168,19 +168,19 @@ describe('Asset', function () {
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
       );
       let xdr = asset.toXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.Asset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.Asset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum12');
       expect(xdr.value().assetCode()).to.equal('12345\0\0\0\0\0\0\0');
 
       xdr = asset.toChangeTrustXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.ChangeTrustAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.ChangeTrustAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum12');
       expect(xdr.value().assetCode()).to.equal('12345\0\0\0\0\0\0\0');
 
       xdr = asset.toTrustLineXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.TrustLineAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.TrustLineAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum12');
       expect(xdr.value().assetCode()).to.equal('12345\0\0\0\0\0\0\0');
@@ -192,19 +192,19 @@ describe('Asset', function () {
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
       );
       let xdr = asset.toXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.Asset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.Asset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum12');
       expect(xdr.value().assetCode()).to.equal('123456789012');
 
       xdr = asset.toChangeTrustXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.ChangeTrustAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.ChangeTrustAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum12');
       expect(xdr.value().assetCode()).to.equal('123456789012');
 
       xdr = asset.toTrustLineXDRObject();
-      expect(xdr).to.be.instanceof(StellarBase.xdr.TrustLineAsset);
+      expect(xdr).to.be.instanceof(LantahBase.xdr.TrustLineAsset);
       expect(() => xdr.toXDR('hex')).to.not.throw();
       expect(xdr.arm()).to.equal('alphaNum12');
       expect(xdr.value().assetCode()).to.equal('123456789012');
@@ -213,7 +213,7 @@ describe('Asset', function () {
 
   describe('fromOperation()', function () {
     it('parses a native asset XDR', function () {
-      var xdr = new StellarBase.xdr.Asset.assetTypeNative();
+      var xdr = new LantahBase.xdr.Asset.assetTypeNative();
       var asset = Asset.fromOperation(xdr);
 
       expect(asset).to.be.instanceof(Asset);
@@ -223,11 +223,11 @@ describe('Asset', function () {
     it('parses a 4-alphanum asset XDR', function () {
       var issuer = 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
       var assetCode = 'KHL';
-      var assetType = new StellarBase.xdr.AlphaNum4({
+      var assetType = new LantahBase.xdr.AlphaNum4({
         assetCode: assetCode + '\0',
-        issuer: StellarBase.Keypair.fromPublicKey(issuer).xdrAccountId()
+        issuer: LantahBase.Keypair.fromPublicKey(issuer).xdrAccountId()
       });
-      var xdr = new StellarBase.xdr.Asset(
+      var xdr = new LantahBase.xdr.Asset(
         'assetTypeCreditAlphanum4',
         assetType
       );
@@ -242,11 +242,11 @@ describe('Asset', function () {
     it('parses a 12-alphanum asset XDR', function () {
       var issuer = 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
       var assetCode = 'KHLTOKEN';
-      var assetType = new StellarBase.xdr.AlphaNum12({
+      var assetType = new LantahBase.xdr.AlphaNum12({
         assetCode: assetCode + '\0\0\0\0',
-        issuer: StellarBase.Keypair.fromPublicKey(issuer).xdrAccountId()
+        issuer: LantahBase.Keypair.fromPublicKey(issuer).xdrAccountId()
       });
-      var xdr = new StellarBase.xdr.Asset(
+      var xdr = new LantahBase.xdr.Asset(
         'assetTypeCreditAlphanum12',
         assetType
       );
@@ -295,14 +295,14 @@ describe('Asset', function () {
     });
 
     it('returns false if assets are equal', function () {
-      const XLM = new Asset.native();
-      expect(Asset.compare(XLM, XLM)).to.eq(0);
+      const GRAM = new Asset.native();
+      expect(Asset.compare(GRAM, GRAM)).to.eq(0);
       expect(Asset.compare(assetA, assetA)).to.eq(0);
       expect(Asset.compare(assetB, assetB)).to.eq(0);
     });
 
     it('test if asset types are being validated as native < anum4 < anum12', function () {
-      const XLM = new Asset.native();
+      const GRAM = new Asset.native();
       const anum4 = new Asset(
         'ARST',
         'GB7TAYRUZGE6TVT7NHP5SMIZRNQA6PLM423EYISAOAP3MKYIQMVYP2JO'
@@ -312,15 +312,15 @@ describe('Asset', function () {
         'GB7TAYRUZGE6TVT7NHP5SMIZRNQA6PLM423EYISAOAP3MKYIQMVYP2JO'
       );
 
-      expect(Asset.compare(XLM, XLM)).to.eq(0);
-      expect(Asset.compare(XLM, anum4)).to.eq(-1);
-      expect(Asset.compare(XLM, anum12)).to.eq(-1);
+      expect(Asset.compare(GRAM, GRAM)).to.eq(0);
+      expect(Asset.compare(GRAM, anum4)).to.eq(-1);
+      expect(Asset.compare(GRAM, anum12)).to.eq(-1);
 
-      expect(Asset.compare(anum4, XLM)).to.eq(1);
+      expect(Asset.compare(anum4, GRAM)).to.eq(1);
       expect(Asset.compare(anum4, anum4)).to.eq(0);
       expect(Asset.compare(anum4, anum12)).to.eq(-1);
 
-      expect(Asset.compare(anum12, XLM)).to.eq(1);
+      expect(Asset.compare(anum12, GRAM)).to.eq(1);
       expect(Asset.compare(anum12, anum4)).to.eq(1);
       expect(Asset.compare(anum12, anum12)).to.eq(0);
     });
@@ -391,7 +391,7 @@ describe('Asset', function () {
           'CCWNZPARJG7KQ6N4BGZ5OBWKSSK4AVQ5URLDRXB4ZJXKGEJQTIIRPAHN'
         ]
       ].forEach(([asset, contractId]) => {
-        expect(asset.contractId(StellarBase.Networks.FUTURENET)).to.equal(
+        expect(asset.contractId(LantahBase.Networks.FUTURENET)).to.equal(
           contractId,
           `the asset was: ${asset.toString()}`
         );

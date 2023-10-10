@@ -1,9 +1,9 @@
-let xdr = StellarBase.xdr;
-let dataBuilder = StellarBase.SorobanDataBuilder;
+let xdr = LantahBase.xdr;
+let dataBuilder = LantahBase.SorobanDataBuilder;
 
 describe('SorobanTransactionData can be built', function () {
   const contractId = 'CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE';
-  const c = new StellarBase.Contract(contractId);
+  const c = new LantahBase.Contract(contractId);
 
   const sentinel = new xdr.SorobanTransactionData({
     resources: new xdr.SorobanResources({
