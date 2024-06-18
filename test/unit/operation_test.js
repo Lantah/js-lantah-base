@@ -7,7 +7,7 @@ describe('Operation', function () {
     it('creates a createAccountOp', function () {
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
-      var startingBalance = '1000.0000000';
+      var startingBalance = '1000.000000';
       let op = LantahBase.Operation.createAccount({
         destination,
         startingBalance
@@ -20,7 +20,7 @@ describe('Operation', function () {
       expect(obj.type).to.be.equal('createAccount');
       expect(obj.destination).to.be.equal(destination);
       expect(operation.body().value().startingBalance().toString()).to.be.equal(
-        '10000000000'
+        '1000000000'
       );
       expect(obj.startingBalance).to.be.equal(startingBalance);
     });
@@ -71,7 +71,7 @@ describe('Operation', function () {
     it('creates a paymentOp', function () {
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
-      var amount = '1000.0000000';
+      var amount = '1000.000000';
       var asset = new LantahBase.Asset(
         'USDUSD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
@@ -95,7 +95,7 @@ describe('Operation', function () {
     //  ID:      2
     const destination =
       'MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAAGZFQ';
-    const amount = '1000.0000000';
+    const amount = '1000.000000';
     const asset = LantahBase.Asset.native();
     const source =
       'MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAALIWQ';
@@ -165,14 +165,14 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      var sendMax = '3.0070000';
+      var sendMax = '3.007000';
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
       var destAsset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      var destAmount = '3.1415000';
+      var destAmount = '3.141500';
       var path = [
         new LantahBase.Asset(
           'USD',
@@ -229,8 +229,8 @@ describe('Operation', function () {
     );
     const destAsset = sendAsset;
 
-    const sendMax = '3.0070000';
-    const destAmount = '3.1415000';
+    const sendMax = '3.007000';
+    const destAmount = '3.141500';
     const path = [
       new LantahBase.Asset(
         'USD',
@@ -303,14 +303,14 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      var sendAmount = '3.0070000';
+      var sendAmount = '3.007000';
       var destination =
         'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ';
       var destAsset = new LantahBase.Asset(
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      var destMin = '3.1415000';
+      var destMin = '3.141500';
       var path = [
         new LantahBase.Asset(
           'USD',
@@ -367,8 +367,8 @@ describe('Operation', function () {
       'USD',
       'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
     );
-    opts.destMin = '3.1415000';
-    opts.sendAmount = '3.0070000';
+    opts.destMin = '3.141500';
+    opts.sendAmount = '3.007000';
     opts.path = [
       new LantahBase.Asset(
         'USD',
@@ -457,7 +457,7 @@ describe('Operation', function () {
       expect(operation.body().value().limit().toString()).to.be.equal(
         '9223372036854775807'
       ); // MAX_INT64
-      expect(obj.limit).to.be.equal('922337203685.4775807');
+      expect(obj.limit).to.be.equal('9223372036854.775807');
     });
 
     it('creates a changeTrustOp with Asset and limit', function () {
@@ -467,7 +467,7 @@ describe('Operation', function () {
       );
       let op = LantahBase.Operation.changeTrust({
         asset,
-        limit: '50.0000000'
+        limit: '50.000000'
       });
       var xdr = op.toXDR('hex');
       var operation = LantahBase.xdr.Operation.fromXDR(
@@ -477,9 +477,9 @@ describe('Operation', function () {
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
       expect(operation.body().value().limit().toString()).to.be.equal(
-        '500000000'
+        '50000000'
       );
-      expect(obj.limit).to.be.equal('50.0000000');
+      expect(obj.limit).to.be.equal('50.000000');
     });
 
     it('creates a changeTrustOp to a liquidity pool', function () {
@@ -505,7 +505,7 @@ describe('Operation', function () {
       expect(opXdrObj.body().value().limit().toString()).to.be.equal(
         '9223372036854775807'
       ); // MAX_INT64
-      expect(operation.limit).to.be.equal('922337203685.4775807');
+      expect(operation.limit).to.be.equal('9223372036854.775807');
     });
 
     it('deletes an Asset trustline', function () {
@@ -515,7 +515,7 @@ describe('Operation', function () {
       );
       let op = LantahBase.Operation.changeTrust({
         asset: asset,
-        limit: '0.0000000'
+        limit: '0.000000'
       });
       var xdr = op.toXDR('hex');
       var operation = LantahBase.xdr.Operation.fromXDR(
@@ -524,7 +524,7 @@ describe('Operation', function () {
       var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
-      expect(obj.limit).to.be.equal('0.0000000');
+      expect(obj.limit).to.be.equal('0.000000');
     });
 
     it('deletes a LiquidityPoolAsset trustline', function () {
@@ -540,7 +540,7 @@ describe('Operation', function () {
       const asset = new LantahBase.LiquidityPoolAsset(assetA, assetB, fee);
       let op = LantahBase.Operation.changeTrust({
         asset,
-        limit: '0.0000000'
+        limit: '0.000000'
       });
       var xdr = op.toXDR('hex');
       var operation = LantahBase.xdr.Operation.fromXDR(
@@ -549,7 +549,7 @@ describe('Operation', function () {
       var obj = LantahBase.Operation.fromXDRObject(operation);
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
-      expect(obj.limit).to.be.equal('0.0000000');
+      expect(obj.limit).to.be.equal('0.000000');
     });
 
     it('throws TypeError for incorrect limit argument', function () {
@@ -925,7 +925,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.amount = '3.1234560';
+      opts.amount = '3.123456';
       opts.price = '8.141592';
       opts.offerId = '1';
       let op = LantahBase.Operation.manageSellOffer(opts);
@@ -938,7 +938,7 @@ describe('Operation', function () {
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
       expect(operation.body().value().amount().toString()).to.be.equal(
-        '31234560'
+        '3123456'
       );
       expect(obj.amount).to.be.equal(opts.amount);
       expect(obj.price).to.be.equal(opts.price);
@@ -1049,7 +1049,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.amount = '1000.0000000';
+      opts.amount = '1000.000000';
       opts.price = '3.141592';
       let op = LantahBase.Operation.manageSellOffer(opts);
       var xdr = op.toXDR('hex');
@@ -1061,7 +1061,7 @@ describe('Operation', function () {
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
       expect(operation.body().value().amount().toString()).to.be.equal(
-        '10000000000'
+        '1000000000'
       );
       expect(obj.amount).to.be.equal(opts.amount);
       expect(obj.price).to.be.equal(opts.price);
@@ -1078,7 +1078,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.amount = '0.0000000';
+      opts.amount = '0.000000';
       opts.price = '3.141592';
       opts.offerId = '1';
       let op = LantahBase.Operation.manageSellOffer(opts);
@@ -1179,7 +1179,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buyAmount = '3.1234560';
+      opts.buyAmount = '3.123456';
       opts.price = '8.141592';
       opts.offerId = '1';
       let op = LantahBase.Operation.manageBuyOffer(opts);
@@ -1192,7 +1192,7 @@ describe('Operation', function () {
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
       expect(operation.body().value().buyAmount().toString()).to.be.equal(
-        '31234560'
+        '3123456'
       );
       expect(obj.buyAmount).to.be.equal(opts.buyAmount);
       expect(obj.price).to.be.equal(opts.price);
@@ -1303,7 +1303,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buyAmount = '1000.0000000';
+      opts.buyAmount = '1000.000000';
       opts.price = '3.141592';
       let op = LantahBase.Operation.manageBuyOffer(opts);
       var xdr = op.toXDR('hex');
@@ -1315,7 +1315,7 @@ describe('Operation', function () {
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
       expect(operation.body().value().buyAmount().toString()).to.be.equal(
-        '10000000000'
+        '1000000000'
       );
       expect(obj.buyAmount).to.be.equal(opts.buyAmount);
       expect(obj.price).to.be.equal(opts.price);
@@ -1332,7 +1332,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.buyAmount = '0.0000000';
+      opts.buyAmount = '0.000000';
       opts.price = '3.141592';
       opts.offerId = '1';
       let op = LantahBase.Operation.manageBuyOffer(opts);
@@ -1433,7 +1433,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.amount = '11.2782700';
+      opts.amount = '11.278270';
       opts.price = '3.07';
       let op = LantahBase.Operation.createPassiveSellOffer(opts);
       var xdr = op.toXDR('hex');
@@ -1445,7 +1445,7 @@ describe('Operation', function () {
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
       expect(operation.body().value().amount().toString()).to.be.equal(
-        '112782700'
+        '11278270'
       );
       expect(obj.amount).to.be.equal(opts.amount);
       expect(obj.price).to.be.equal(opts.price);
@@ -1473,7 +1473,7 @@ describe('Operation', function () {
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
       expect(operation.body().value().amount().toString()).to.be.equal(
-        '112782700'
+        '11278270'
       );
       expect(obj.amount).to.be.equal(opts.amount);
       expect(obj.price).to.be.equal(opts.price.toString());
@@ -1489,7 +1489,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.amount = '11.2782700';
+      opts.amount = '11.278270';
       opts.price = new BigNumber(5).dividedBy(4);
       let op = LantahBase.Operation.createPassiveSellOffer(opts);
       var xdr = op.toXDR('hex');
@@ -2324,7 +2324,7 @@ describe('Operation', function () {
         'GCOIN',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      const amount = '100.0000000';
+      const amount = '100.000000';
 
       expect(() => {
         LantahBase.Operation.clawback({
@@ -2344,7 +2344,7 @@ describe('Operation', function () {
     it('returns a clawback()', function () {
       let account = 'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7';
       let asset = new LantahBase.Asset('GCOIN', account);
-      const amount = '100.0000000';
+      const amount = '100.000000';
       const op = LantahBase.Operation.clawback({
         from: account,
         amount: amount,
@@ -2493,8 +2493,8 @@ describe('Operation', function () {
       const opts = {
         liquidityPoolId:
           'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7',
-        maxAmountA: '10.0000000',
-        maxAmountB: '20.0000000',
+        maxAmountA: '10.000000',
+        maxAmountB: '20.000000',
         minPrice: '-0.45',
         maxPrice: '0.55'
       };
@@ -2507,8 +2507,8 @@ describe('Operation', function () {
       const opts = {
         liquidityPoolId:
           'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7',
-        maxAmountA: '10.0000000',
-        maxAmountB: '20.0000000',
+        maxAmountA: '10.000000',
+        maxAmountB: '20.000000',
         minPrice: '0.45',
         maxPrice: '0.55'
       };
@@ -2518,10 +2518,10 @@ describe('Operation', function () {
       const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
-        '100000000'
+        '10000000'
       );
       expect(xdrObj.body().value().maxAmountB().toString()).to.equal(
-        '200000000'
+        '20000000'
       );
 
       const operation = LantahBase.Operation.fromXDRObject(xdrObj);
@@ -2537,8 +2537,8 @@ describe('Operation', function () {
       const opts = {
         liquidityPoolId:
           'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7',
-        maxAmountA: '10.0000000',
-        maxAmountB: '20.0000000',
+        maxAmountA: '10.000000',
+        maxAmountB: '20.000000',
         minPrice: {
           n: 9,
           d: 20
@@ -2554,10 +2554,10 @@ describe('Operation', function () {
       const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
-        '100000000'
+        '10000000'
       );
       expect(xdrObj.body().value().maxAmountB().toString()).to.equal(
-        '200000000'
+        '20000000'
       );
 
       const operation = LantahBase.Operation.fromXDRObject(xdrObj);
@@ -2577,8 +2577,8 @@ describe('Operation', function () {
       const opts = {
         liquidityPoolId:
           'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7',
-        maxAmountA: '10.0000000',
-        maxAmountB: '20.0000000',
+        maxAmountA: '10.000000',
+        maxAmountB: '20.000000',
         minPrice: 0.45,
         maxPrice: 0.55
       };
@@ -2588,10 +2588,10 @@ describe('Operation', function () {
       const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
-        '100000000'
+        '10000000'
       );
       expect(xdrObj.body().value().maxAmountB().toString()).to.equal(
-        '200000000'
+        '20000000'
       );
 
       const operation = LantahBase.Operation.fromXDRObject(xdrObj);
@@ -2607,8 +2607,8 @@ describe('Operation', function () {
       const opts = {
         liquidityPoolId:
           'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7',
-        maxAmountA: '10.0000000',
-        maxAmountB: '20.0000000',
+        maxAmountA: '10.000000',
+        maxAmountB: '20.000000',
         minPrice: new BigNumber(9).dividedBy(20),
         maxPrice: new BigNumber(11).dividedBy(20)
       };
@@ -2618,10 +2618,10 @@ describe('Operation', function () {
       const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolDeposit');
       expect(xdrObj.body().value().maxAmountA().toString()).to.equal(
-        '100000000'
+        '10000000'
       );
       expect(xdrObj.body().value().maxAmountB().toString()).to.equal(
-        '200000000'
+        '20000000'
       );
 
       const operation = LantahBase.Operation.fromXDRObject(xdrObj);
@@ -2648,17 +2648,17 @@ describe('Operation', function () {
       opts.liquidityPoolId =
         'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7';
       expect(() => LantahBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
-        /amount argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
+        /amount argument must be of type String, represent a positive number and have at most 6 digits after the decimal/
       );
 
       opts.amount = '10';
       expect(() => LantahBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
-        /minAmountA argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
+        /minAmountA argument must be of type String, represent a positive number and have at most 6 digits after the decimal/
       );
 
       opts.minAmountA = '10000';
       expect(() => LantahBase.Operation.liquidityPoolWithdraw(opts)).to.throw(
-        /minAmountB argument must be of type String, represent a positive number and have at most 7 digits after the decimal/
+        /minAmountB argument must be of type String, represent a positive number and have at most 6 digits after the decimal/
       );
 
       opts.minAmountB = '20000';
@@ -2671,9 +2671,9 @@ describe('Operation', function () {
       const opts = {
         liquidityPoolId:
           'dd7b1ab831c273310ddbec6f97870aa83c2fbd78ce22aded37ecbf4f3380fac7',
-        amount: '5.0000000',
-        minAmountA: '10.0000000',
-        minAmountB: '20.0000000'
+        amount: '5.000000',
+        minAmountA: '10.000000',
+        minAmountB: '20.000000'
       };
       const op = LantahBase.Operation.liquidityPoolWithdraw(opts);
       const xdr = op.toXDR('hex');
@@ -2703,7 +2703,7 @@ describe('Operation', function () {
         '10',
         '0.10',
         '0.1234567',
-        '922337203685.4775807' // MAX
+        '9223372036854.775807' // MAX
       ];
 
       for (var i in amounts) {
@@ -2741,16 +2741,16 @@ describe('Operation', function () {
 
   describe('._fromXDRAmount()', function () {
     it('correctly parses the amount', function () {
-      expect(LantahBase.Operation._fromXDRAmount(1)).to.be.equal('0.0000001');
-      expect(LantahBase.Operation._fromXDRAmount(10000000)).to.be.equal(
-        '1.0000000'
+      expect(LantahBase.Operation._fromXDRAmount(1)).to.be.equal('0.000001');
+      expect(LantahBase.Operation._fromXDRAmount(1000000)).to.be.equal(
+        '1.000000'
       );
-      expect(LantahBase.Operation._fromXDRAmount(10000000000)).to.be.equal(
-        '1000.0000000'
+      expect(LantahBase.Operation._fromXDRAmount(1000000000)).to.be.equal(
+        '1000.000000'
       );
       expect(
-        LantahBase.Operation._fromXDRAmount(1000000000000000000)
-      ).to.be.equal('100000000000.0000000');
+        LantahBase.Operation._fromXDRAmount(100000000000000000)
+      ).to.be.equal('100000000000.000000');
     });
   });
 });

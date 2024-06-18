@@ -16,7 +16,7 @@ import {
   encodeMuxedAccountToAddress
 } from './util/decode_encode_muxed_account';
 
-const ONE = 10000000;
+const ONE = 1000000;
 const MAX_INT64 = '9223372036854775807';
 
 /**
@@ -431,8 +431,8 @@ export class Operation {
       amount.isNegative() ||
       // > Max value
       amount.times(ONE).gt(new BigNumber(MAX_INT64).toString()) ||
-      // Decimal places (max 7)
-      amount.decimalPlaces() > 7 ||
+      // Decimal places (max 6)
+      amount.decimalPlaces() > 6 ||
       // NaN or Infinity
       amount.isNaN() ||
       !amount.isFinite()
