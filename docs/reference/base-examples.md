@@ -16,7 +16,7 @@ is giving the new account 25 GRAM as its initial balance.
 
 
 ```javascript
-const server = new LantahSDK.Server('https://horizon-testnet.stellar.org')
+const server = new LantahSDK.Server('https://orbitr.lantah.network')
 const source = LantahSDK.Keypair.fromSecret('SA3W53XXG64ITFFIYQSBIJDG26LMXYRIMEVMNQMFAQJOYCZACCYBA34L')
 const destination = LantahSDK.Keypair.random()
 
