@@ -1,4 +1,4 @@
-import * as LantahSDK from 'stellar-base';
+import * as LantahSDK from 'lantag-base';
 
 const masterKey = LantahSDK.Keypair.master(LantahSDK.Networks.TESTNET); // $ExpectType Keypair
 const sourceKey = LantahSDK.Keypair.random(); // $ExpectType Keypair
