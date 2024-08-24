@@ -12,7 +12,7 @@ describe('FeeBumpTransaction', function () {
     );
     this.destination =
       'GDQERENWDDSQZS7R7WKHZI3BSOYMV3FSWR7TFUYFTKQ447PIX6NREOJM';
-    this.amount = '2000.0000000';
+    this.amount = '2000.000000';
     this.asset = LantahBase.Asset.native();
 
     this.innerTx = new LantahBase.TransactionBuilder(this.innerAccount, {

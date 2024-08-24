@@ -10,7 +10,7 @@ describe('Transaction', function () {
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
     let asset = LantahBase.Asset.native();
-    let amount = '2000.0000000';
+    let amount = '2000.000000';
 
     let input = new LantahBase.TransactionBuilder(source, {
       fee: 100,
@@ -53,7 +53,7 @@ describe('Transaction', function () {
       let destination =
         'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
       let asset = LantahBase.Asset.native();
-      let amount = '2000.0000000';
+      let amount = '2000.000000';
 
       this.transaction = new LantahBase.TransactionBuilder(source, {
         fee: 100,
@@ -91,7 +91,7 @@ describe('Transaction', function () {
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
     let asset = LantahBase.Asset.native();
-    let amount = '2000.0000000';
+    let amount = '2000.000000';
 
     let input = new LantahBase.TransactionBuilder(source, {
       fee: 100,
@@ -123,7 +123,7 @@ describe('Transaction', function () {
     let destination =
       'GDJJRRMBK4IWLEPJGIE6SXD2LP7REGZODU7WDC3I2D6MR37F4XSHBKX2';
     let asset = LantahBase.Asset.native();
-    let amount = '2000.0000000';
+    let amount = '2000.000000';
 
     let input = new LantahBase.TransactionBuilder(source, {
       fee: 100,
@@ -514,7 +514,7 @@ describe('Transaction', function () {
       const account = new LantahBase.Account(source.publicKey(), '7');
       const destination =
         'GDQERENWDDSQZS7R7WKHZI3BSOYMV3FSWR7TFUYFTKQ447PIX6NREOJM';
-      const amount = '2000.0000000';
+      const amount = '2000.000000';
       const asset = LantahBase.Asset.native();
       let tx = new LantahBase.TransactionBuilder(account, {
         fee: baseFee,

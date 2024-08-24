@@ -199,7 +199,7 @@ describe('Operation', function () {
       expect(obj.type).to.be.equal('pathPaymentStrictReceive');
       expect(obj.sendAsset.equals(sendAsset)).to.be.true;
       expect(operation.body().value().sendMax().toString()).to.be.equal(
-        '30070000'
+        '3007000'
       );
       expect(obj.sendMax).to.be.equal(sendMax);
       expect(obj.destination).to.be.equal(destination);
@@ -337,7 +337,7 @@ describe('Operation', function () {
       expect(obj.type).to.be.equal('pathPaymentStrictSend');
       expect(obj.sendAsset.equals(sendAsset)).to.be.true;
       expect(operation.body().value().sendAmount().toString()).to.be.equal(
-        '30070000'
+        '3007000'
       );
       expect(obj.sendAmount).to.be.equal(sendAmount);
       expect(obj.destination).to.be.equal(destination);
@@ -477,7 +477,7 @@ describe('Operation', function () {
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
       expect(operation.body().value().limit().toString()).to.be.equal(
-        '50000000'
+        '5000000'
       );
       expect(obj.limit).to.be.equal('50.000000');
     });
@@ -1461,7 +1461,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      opts.amount = '11.2782700';
+      opts.amount = '11.278270';
       opts.price = 3.07;
       let op = LantahBase.Operation.createPassiveSellOffer(opts);
       var xdr = op.toXDR('hex');
@@ -1501,7 +1501,7 @@ describe('Operation', function () {
       expect(obj.selling.equals(opts.selling)).to.be.true;
       expect(obj.buying.equals(opts.buying)).to.be.true;
       expect(operation.body().value().amount().toString()).to.be.equal(
-        '112782700'
+        '11278270'
       );
       expect(obj.amount).to.be.equal(opts.amount);
       expect(obj.price).to.be.equal('1.25');
@@ -1795,7 +1795,7 @@ describe('Operation', function () {
         'USD',
         'GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7'
       );
-      const amount = '100.0000000';
+      const amount = '100.000000';
       const claimants = [
         new LantahBase.Claimant(
           'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
@@ -1821,7 +1821,7 @@ describe('Operation', function () {
       );
     });
     it('throws an error when asset is not present', function () {
-      const amount = '100.0000000';
+      const amount = '100.000000';
       const claimants = [
         new LantahBase.Claimant(
           'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGSNFHEYVXM3XOJMDS674JZ'
@@ -2680,7 +2680,7 @@ describe('Operation', function () {
 
       const xdrObj = LantahBase.xdr.Operation.fromXDR(Buffer.from(xdr, 'hex'));
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolWithdraw');
-      expect(xdrObj.body().value().amount().toString()).to.equal('50000000');
+      expect(xdrObj.body().value().amount().toString()).to.equal('5000000');
       expect(xdrObj.body().value().minAmountA().toString()).to.equal(
         '100000000'
       );
