@@ -205,7 +205,7 @@ describe('Operation', function () {
       expect(obj.destination).to.be.equal(destination);
       expect(obj.destAsset.equals(destAsset)).to.be.true;
       expect(operation.body().value().destAmount().toString()).to.be.equal(
-        '31415000'
+        '3141500'
       );
       expect(obj.destAmount).to.be.equal(destAmount);
       expect(obj.path[0].getCode()).to.be.equal('USD');
@@ -343,7 +343,7 @@ describe('Operation', function () {
       expect(obj.destination).to.be.equal(destination);
       expect(obj.destAsset.equals(destAsset)).to.be.true;
       expect(operation.body().value().destMin().toString()).to.be.equal(
-        '31415000'
+        '3141500'
       );
       expect(obj.destMin).to.be.equal(destMin);
       expect(obj.path[0].getCode()).to.be.equal('USD');
@@ -477,7 +477,7 @@ describe('Operation', function () {
       expect(obj.type).to.be.equal('changeTrust');
       expect(obj.line).to.be.deep.equal(asset);
       expect(operation.body().value().limit().toString()).to.be.equal(
-        '5000000'
+        '50000000'
       );
       expect(obj.limit).to.be.equal('50.000000');
     });
@@ -2682,10 +2682,10 @@ describe('Operation', function () {
       expect(xdrObj.body().switch().name).to.equal('liquidityPoolWithdraw');
       expect(xdrObj.body().value().amount().toString()).to.equal('5000000');
       expect(xdrObj.body().value().minAmountA().toString()).to.equal(
-        '100000000'
+        '10000000'
       );
       expect(xdrObj.body().value().minAmountB().toString()).to.equal(
-        '200000000'
+        '20000000'
       );
 
       const operation = LantahBase.Operation.fromXDRObject(xdrObj);
@@ -2702,7 +2702,7 @@ describe('Operation', function () {
       let amounts = [
         '10',
         '0.10',
-        '0.1234567',
+        '0.12345678',
         '9223372036854.775807' // MAX
       ];
 
@@ -2721,7 +2721,7 @@ describe('Operation', function () {
         '-10',
         '-10.5',
         '0.12345678',
-        '922337203685.4775808', // Overflow
+        '9223372036854.775808', // Overflow
         'Infinity',
         Infinity,
         'Nan',
