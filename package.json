@@ -1,6 +1,6 @@
 {
   "name": "lantah-base",
-  "version": "10.0.0-beta.3",
+  "version": "10.0.0-beta.4",
   "description": "Low-level support library for the Lantah network, based on stellar-base..",
   "main": "./lib/index.js",
   "browser": {
